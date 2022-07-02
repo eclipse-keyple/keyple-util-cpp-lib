@@ -42,7 +42,7 @@ const std::string TLV2 =
 //     return false;
 // }
 
-static bool mapContainsEntry(const std::map<int, std::vector<uint8_t>>& m, 
+static bool mapContainsEntry(const std::map<const int, const std::vector<uint8_t>>& m, 
                              const int tag, 
                              const std::vector<uint8_t>& value)
 {

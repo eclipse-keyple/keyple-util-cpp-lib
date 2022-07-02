@@ -15,6 +15,9 @@
 #include <map>
 #include <vector>
 
+ /* Core */
+#include "KeypleUtilExport.h"
+
 namespace keyple {
 namespace core {
 namespace util {
@@ -34,7 +37,7 @@ namespace util {
  *
  * @since 2.0.0
  */
-class BerTlvUtil {
+class KEYPLEUTIL_API BerTlvUtil {
 public:
     /**
      * Parse the provided TLV structure and place all or only primitive tags found in a map. The key

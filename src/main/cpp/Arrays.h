@@ -80,10 +80,10 @@ public:
     }
 
     static std::vector<char> copyOfRange(const std::vector<char>& original,
-                                         const int from,
-                                         const int to)
+                                         const size_t from,
+                                         const size_t to)
     {
-        if ((to - from) > static_cast<int>(original.size())) {
+        if ((to - from) > original.size()) {
             throw IndexOutOfBoundsException("index out of bound");
         }
 
@@ -94,10 +94,10 @@ public:
     }
 
     static std::vector<uint8_t> copyOfRange(const std::vector<uint8_t>& original,
-                                            const int from,
-                                            const int to)
+                                            const size_t from,
+                                            const size_t to)
     {
-        if ((to - from) > static_cast<int>(original.size())) {
+        if ((to - from) > original.size()) {
             throw IndexOutOfBoundsException("index out of bound");
         }
 
@@ -198,9 +198,9 @@ public:
     }
 
     template <typename T>
-    static void fill(std::vector<T>& a, int from_Index, int to_Index, T val)
+    static void fill(std::vector<T>& a, const size_t from_Index, const size_t to_Index, T val)
     {
-        for (int i = from_Index; i < to_Index; i++) {
+        for (size_t i = from_Index; i < to_Index; i++) {
             a[i] = val;
         }
     }

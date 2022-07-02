@@ -64,7 +64,7 @@ Assert& Assert::isTrue(const bool condition, const std::string& name)
     return *this;
 }
 
-Assert& Assert::greaterOrEqual(const int number, const int minValue, const std::string& name)
+Assert& Assert::greaterOrEqual(const size_t number, const size_t minValue, const std::string& name)
 {
     if (number < minValue) {
         throw IllegalArgumentException(ARGUMENT +
@@ -79,7 +79,7 @@ Assert& Assert::greaterOrEqual(const int number, const int minValue, const std::
     return *this;
 }
 
-Assert& Assert::isEqual(const int number, const int value, const std::string& name)
+Assert& Assert::isEqual(const size_t number, const size_t value, const std::string& name)
 {
     if (number != value) {
         throw IllegalArgumentException(ARGUMENT +
@@ -94,9 +94,9 @@ Assert& Assert::isEqual(const int number, const int value, const std::string& na
     return *this;
 }
 
-Assert& Assert::isInRange(const int number,
-                          const int minValue,
-                          const int maxValue,
+Assert& Assert::isInRange(const size_t number,
+                          const size_t minValue,
+                          const size_t maxValue,
                           const std::string& name)
 {
     if (number < minValue) {

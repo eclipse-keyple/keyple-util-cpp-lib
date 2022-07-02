@@ -122,7 +122,7 @@ public:
      * @throw IllegalArgumentException if number is null or has a value less than minValue.
      * @since 2.0.0
      */
-    Assert& greaterOrEqual(const int number, const int minValue, const std::string& name);
+    Assert& greaterOrEqual(const size_t number, const size_t minValue, const std::string& name);
 
     /**
      * Assert that an integer is equal to value.
@@ -134,7 +134,7 @@ public:
      * @throw IllegalArgumentException if number is null or has a value less than minValue.
      * @since 2.0.0
      */
-    Assert& isEqual(const int number, const int value, const std::string& name);
+    Assert& isEqual(const size_t number, const size_t value, const std::string& name);
 
     /**
      * Assert that an integer is not null and is in the range minValue, maxValue.
@@ -147,9 +147,9 @@ public:
      * @throw IllegalArgumentException if number is null or is out of range.
      * @since 2.0.0
      */
-    Assert& isInRange(const int number,
-                      const int minValue,
-                      const int maxValue,
+    Assert& isInRange(const size_t number,
+                      const size_t minValue,
+                      const size_t maxValue,
                       const std::string& name);
 
 private:

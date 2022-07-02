@@ -103,6 +103,22 @@ std::ostream& operator<<(std::ostream& os, const std::map<A, B>& s)
     return os;
 }
 
+template<class A, class B>
+inline
+std::ostream& operator<<(std::ostream& os, const std::map<const A, B>& s)
+{
+    os << "MAP: {";
+    for (auto it = s.begin(); it != s.end(); ++it)
+    {
+        if (it != s.begin())
+            os << ", ";
+        os << "{" << it->first << ", " << it->second << "}";
+    }
+    os << "}";
+
+    return os;
+}
+
 template <typename out>
 inline void split(const std::string &s, const std::regex& re, out result)
 {

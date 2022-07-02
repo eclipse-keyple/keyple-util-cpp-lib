@@ -50,10 +50,10 @@ public:
     /**
      *
      */
-    static void arraycopy(const std::vector<char>& src, int srcPos,
-                          std::vector<char>& dest, int destPos, int length)
+    static void arraycopy(const std::vector<char>& src, size_t srcPos,
+                          std::vector<char>& dest, size_t destPos, size_t length)
     {
-        for (int i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++) {
             dest[destPos + i] = src[srcPos + i];
         }
     }
@@ -61,18 +61,18 @@ public:
     /**
      *
      */
-    static void arraycopy(const std::vector<uint8_t>& src, int srcPos,
-                          std::vector<char>& dest, int destPos, int length)
+    static void arraycopy(const std::vector<uint8_t>& src, size_t srcPos,
+                          std::vector<char>& dest, size_t destPos, size_t length)
     {
-        for (int i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++) {
             dest[destPos + i] = static_cast<char>(src[srcPos + i]);
         }
     }
 
-    static void arraycopy(const std::vector<uint8_t>& src, int srcPos,
-                          std::vector<uint8_t>& dest, int destPos, int length)
+    static void arraycopy(const std::vector<uint8_t>& src, size_t srcPos,
+                          std::vector<uint8_t>& dest, size_t destPos, size_t length)
     {
-        for (int i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++) {
             dest[destPos + i] = src[srcPos + i];
         }
     }
