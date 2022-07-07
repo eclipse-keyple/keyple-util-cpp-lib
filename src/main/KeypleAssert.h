@@ -152,6 +152,18 @@ public:
                       const size_t maxValue,
                       const std::string& name);
 
+    /**
+     * Assert that a string has a valid hexadecimal format.
+     *
+     * @param hex The string to check.
+     * @param name The object name.
+     * @return The current instance.
+     * @throw IllegalArgumentException If the provided string is null, empty or has not a valid
+     *        hexadecimal format.
+     * @since 2.1.0
+     */
+    Assert& isHexString(const std::string& hex, const std::string& name);
+
 private:
     /**
      *
@@ -164,6 +176,7 @@ private:
     static const std::string IS_NULL;
     static const std::string IS_EMPTY;
     static const std::string IS_FALSE;
+    static const std::string IS_NOT_HEX;
     static const std::string NOT_EQUAL_TO;
     static const std::string CLOSING_BRACKET;
 

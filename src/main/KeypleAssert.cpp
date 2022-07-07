@@ -12,6 +12,9 @@
 
 #include "KeypleAssert.h"
 
+/* Keyple Core Util */
+#include "ByteArrayUtil.h"
+
 namespace keyple {
 namespace core {
 namespace util {
@@ -24,6 +27,7 @@ const std::string Assert::GREATER_THAN    = "] greater than [";
 const std::string Assert::IS_NULL         = "] is null.";
 const std::string Assert::IS_EMPTY        = "] is empty.";
 const std::string Assert::IS_FALSE        = "] is false.";
+const std::string Assert::IS_NOT_HEX      = "] is not a hex string.";
 const std::string Assert::NOT_EQUAL_TO    = "] not equal to [";
 const std::string Assert::CLOSING_BRACKET = "].";
 
@@ -115,6 +119,15 @@ Assert& Assert::isInRange(const size_t number,
                                        GREATER_THAN +
                                        std::to_string(maxValue) +
                                        CLOSING_BRACKET);
+    }
+
+    return *this;
+}
+
+Assert& Assert::isHexString(const std::string& hex, const std::string& name)
+{
+    if (!ByteArrayUtil::isValidHexString(hex)) {
+        throw IllegalArgumentException(ARGUMENT + name + IS_NOT_HEX);
     }
 
     return *this;

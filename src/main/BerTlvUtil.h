@@ -41,14 +41,14 @@ class KEYPLEUTIL_API BerTlvUtil {
 public:
     /**
      * Parse the provided TLV structure and place all or only primitive tags found in a map. The key
-     * is an integer representing the tag Id (e.g. 0x84 for the DF name tag), the value is the tag
+     * is an integer representing the tag ID (e.g. 0x84 for the DF name tag), the value is the tag
      * value as an array of bytes.
      *
      * <p><b>Note:</b>This method of extracting tags is deliberately simplified.<br>
-     * If the provided TLV structure contains several identical tags then only one will be reported in
-     * the returned Map.<br>
-     * To overcome this limitation it is recommended to re-parse the constructed tags known to contain
-     * other tags.
+     * If the provided TLV structure contains several identical tags then only one will be reported
+     * in the returned map.<br>
+     * To overcome this limitation it is recommended to re-parse the constructed tags known to
+     * contain other tags.
      *
      * @param tlvStructure The input TLV structure.
      * @param primitiveOnly True if only primitives tags are to be placed in the map.
@@ -64,7 +64,7 @@ public:
      *
      * @param tagId A positive int less than FFFFFFh.
      * @return True if the tag is constructed.
-     * @throw IllegalArgumentException If the tag Id is out of range.
+     * @throw IllegalArgumentException If the tag ID is out of range.
      * @since 2.0.0
      */
     static bool isConstructed(const int tagId);

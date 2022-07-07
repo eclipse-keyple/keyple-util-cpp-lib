@@ -36,9 +36,9 @@ public:
      * @param ins The instruction byte.
      * @param p1 The parameter 1.
      * @param p2 The parameter 2.
-     * @param dataIn The data field of the command (optional).
-     * @param le The maximum number of bytes expected in the data field of the response to the command
-     *     (optional).
+     * @param dataIn The data field of the command (optional). If empty, then LC will be set to 0.
+     * @param le The maximum number of bytes expected in the data field of the response to the
+     *           command (optional).
      * @return A byte array containing the resulting apdu command data.
      * @since 2.0.0
      */

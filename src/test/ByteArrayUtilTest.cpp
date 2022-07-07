@@ -83,6 +83,108 @@ TEST(ByteArrayUtilTest, fromHex_good_hex)
     ASSERT_EQ(bytes, BYTEARRAY_LEN_16);
 }
 
+TEST(ByteArrayUtilTest, hexToByte_whenHexIsEmpty_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToByte(""), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToByte_whenHexLengthIsOdd_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToByte("1"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToByte_whenHexLengthIsGreaterThan2_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToByte("1234"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToByte_whenHexIsValid_shouldBeSuccessful)
+{
+    ASSERT_EQ(ByteArrayUtil::hexToByte("AB"),  0xAB);
+    ASSERT_EQ(ByteArrayUtil::hexToByte("CD"),  0xCD);
+    ASSERT_EQ(ByteArrayUtil::hexToByte("EF"),  0xEF);
+    ASSERT_EQ(ByteArrayUtil::hexToByte("ab"),  0xAB);
+    ASSERT_EQ(ByteArrayUtil::hexToByte("cd"),  0xCD);
+    ASSERT_EQ(ByteArrayUtil::hexToByte("ef"),  0xEF);
+}
+
+TEST(ByteArrayUtilTest, hexToShort_whenHexIsEmpty_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToShort(""), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToShort_whenHexLengthIsOdd_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToShort("1"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToShort_whenHexLengthIsGreaterThan4_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToShort("123456"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToShort_whenHexIsValid_shouldBeSuccessful)
+{
+    ASSERT_EQ(ByteArrayUtil::hexToShort("ABCD"), 0xABCD);
+    ASSERT_EQ(ByteArrayUtil::hexToShort("EF"), 0xEF);
+    ASSERT_EQ(ByteArrayUtil::hexToShort("abcd"), 0xABCD);
+    ASSERT_EQ(ByteArrayUtil::hexToShort("ef"), 0xEF);
+}
+
+TEST(ByteArrayUtilTest, hexToInt_whenHexIsEmpty_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToInt(""), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToInt_whenHexLengthIsOdd_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToInt("1"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToInt_whenHexLengthIsGreaterThan8_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToInt("123456789A"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToInt_whenHexIsValid_shouldBeSuccessful)
+{
+    ASSERT_EQ(ByteArrayUtil::hexToInt("FE"), 0xFE);
+    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF7"), 0xFEF7);
+    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF712"), 0xFEF712);
+    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF71234"), 0xFEF71234);
+    ASSERT_EQ(ByteArrayUtil::hexToInt("ABCDEF"), 0xABCDEF);
+    ASSERT_EQ(ByteArrayUtil::hexToInt("abcdef"), 0xABCDEF);
+}
+
+TEST(ByteArrayUtilTest, hexToLong_whenHexIsEmpty_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToLong(""), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToLong_whenHexLengthIsOdd_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToLong("1"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToLong_whenHexLengthIsGreaterThan16_shouldThrowIAE)
+{
+    EXPECT_THROW(ByteArrayUtil::hexToLong("123456789ABCDEF012"), IllegalArgumentException);
+}
+
+TEST(ByteArrayUtilTest, hexToLong_whenHexIsValid_shouldBeSuccessful)
+{
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FE"), 0xFEL);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7"), 0xFEF7L);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF712"), 0xFEF712L);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF71234"), 0xFEF71234L);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456"), 0xFEF7123456L);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF712345678"), 0xFEF712345678L);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456789A"), 0xFEF7123456789AL);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456789ABC"), 0xFEF7123456789ABCL);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("ABCDEF"), 0xABCDEFL);
+    ASSERT_EQ(ByteArrayUtil::hexToLong("abcdef"), 0xABCDEFL);
+}
+
 TEST(ByteArrayUtilTest, toHex_empty)
 {
     const std::vector<uint8_t> bytes;
@@ -96,6 +198,37 @@ TEST(ByteArrayUtilTest, toHex_bytearray_good)
     const std::string hex = ByteArrayUtil::toHex(BYTEARRAY_LEN_16);
 
     ASSERT_EQ(hex, HEXSTRING_GOOD);
+}
+
+TEST(ByteArrayUtilTest, toHex_byte)
+{
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint8_t>(0xFE)), "FE");
+}
+
+TEST(ByteArrayUtilTest, toHex_short)
+{
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint16_t>(0xFE)), "FE");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint16_t>(0xFE34)), "FE34");
+}
+
+TEST(ByteArrayUtilTest, toHex_int)
+{
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE)), "FE");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE34)), "FE34");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE3456)), "FE3456");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE345678)), "FE345678");
+}
+
+TEST(ByteArrayUtilTest, toHex_long)
+{
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFEL)), "FE");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE34L)), "FE34");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456L)), "FE3456");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE345678L)), "FE345678");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789AL)), "FE3456789A");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCL)), "FE3456789ABC");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEL)), "FE3456789ABCDE");
+    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEF0L)), "FE3456789ABCDEF0");
 }
 
 TEST(ByteArrayUtilTest, twoBytesToInt_empty)
