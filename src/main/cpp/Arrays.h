@@ -151,6 +151,35 @@ public:
         return -1;
     }
 
+    template <typename T>
+    static bool addAll(std::vector<T>& a, const std::vector<T>& b)
+    {
+        if (b.size() == 0) {
+            return false;
+        }
+
+        for (const auto& t : b) {
+            a.push_back(t);
+        }
+
+        return true;
+    }
+
+    template <typename T>
+    static bool addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<T>>& b)
+    {
+        if (b.size() == 0) {
+            return false;
+        }
+
+        for (const auto& t : b) {
+            a.push_back(t);
+        }
+
+        return true;
+    }
+
+
     template <typename T, typename U>
     static bool addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<U>>& b)
     {

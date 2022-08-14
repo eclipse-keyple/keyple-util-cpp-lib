@@ -60,6 +60,20 @@ public:
         const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly);
 
     /**
+     * Parse the provided TLV structure and place all or only primitive tags found in a map. The key
+     * is an integer representing the tag ID (e.g. 0x84 for the DF name tag), the value is the list
+     * of tag values as a list of arrays of bytes.
+     *
+     * @param tlvStructure The input TLV structure.
+     * @param primitiveOnly True if only primitives tags are to be placed in the map.
+     * @return A not null map.
+     * @throw IllegalArgumentException If the parsing of the provided structure failed.
+     * @since 2.1.0
+     */
+    static const std::map<const int, std::vector<std::vector<uint8_t>>> parse(
+        const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly);
+
+    /**
      * Indicates if the provided tag ID corresponds to a constructed tag.
      *
      * @param tagId A positive int less than FFFFFFh.
@@ -84,8 +98,32 @@ private:
      * @param primitiveOnly True if only primitives tags are to be placed in the map.
      * @return A not null map.
      */
-    static const std::map<const int, const std::vector<uint8_t>> parseBuffer(
-        const std::vector<uint8_t> tlvStructure, const bool primitiveOnly);
+    static const std::map<const int, const std::vector<uint8_t>> parseBufferSimple(
+        const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly);
+
+    /**
+      * (private)<br>
+      * Parse the provided TLV structure from the provided offset and place all or only primitive
+      * tags found in a map.
+      *
+      * @param tlvStructure The input TLV structure.
+      * @param primitiveOnly True if only primitives tags are to be placed in the map.
+      * @return A not null map.
+      */
+    static const std::map<const int, std::vector<std::vector<uint8_t>>> parseBuffer(
+        const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly);
+
+    /**
+     * (private)<br>
+     * Gets a reference to the values of the existing tag in the map, or put the new tag in the map
+     * with an empty list of values.
+     *
+     * @param tlvs The map.
+     * @param tag The TAG.
+     * @return A not null reference to the associated list of values.
+     */
+    static std::vector<std::vector<uint8_t>>& getOrInitTagValues(
+        std::map<const int, std::vector<std::vector<uint8_t>>>& tlvs, const int tag);
 
     /**
      * (private)<br>

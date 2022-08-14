@@ -30,6 +30,17 @@ const std::map<const int, const std::vector<uint8_t>> BerTlvUtil::parseSimple(
     const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
 {
     try {
+        return parseBufferSimple(tlvStructure, primitiveOnly);
+    } catch (const IndexOutOfBoundsException& e) {
+        (void)e;
+        throw IllegalArgumentException("Invalid TLV structure.");
+    }
+}
+
+const std::map<const int, std::vector<std::vector<uint8_t>>> BerTlvUtil::parse(
+    const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
+    try {
         return parseBuffer(tlvStructure, primitiveOnly);
     } catch (const IndexOutOfBoundsException& e) {
         (void)e;
@@ -54,11 +65,12 @@ bool BerTlvUtil::isConstructed(const int tagId)
     return (tagId & 0x200000) != 0;
 }
 
-const std::map<const int, const std::vector<uint8_t>> BerTlvUtil::parseBuffer(
-    const std::vector<uint8_t> tlvStructure, const bool primitiveOnly)
+const std::map<const int, const std::vector<uint8_t>> BerTlvUtil::parseBufferSimple(
+    const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
 {
-    int offset = 0;
+
     std::map<const int, const std::vector<uint8_t>> tlvs;
+    int offset = 0;
 
     do {
         const int tagSize = getTagSize(tlvStructure, offset);
@@ -90,6 +102,65 @@ const std::map<const int, const std::vector<uint8_t>> BerTlvUtil::parseBuffer(
     } while (offset < static_cast<int>(tlvStructure.size()));
 
     return tlvs;
+}
+
+const std::map<const int, std::vector<std::vector<uint8_t>>> BerTlvUtil::parseBuffer(
+    const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
+    std::map<const int, std::vector<std::vector<uint8_t>>> tlvs;
+    int offset = 0;
+
+    do {
+        const int tagSize = getTagSize(tlvStructure, offset);
+        const std::vector<uint8_t> tagBytes =
+            Arrays::copyOfRange(tlvStructure, offset, offset + tagSize);
+        const int tag = getTag(tlvStructure, offset, tagSize);
+        const int lengthSize = getLengthSize(tlvStructure, offset + tagSize);
+        const int valueSize = getLength(tlvStructure, offset + tagSize, lengthSize);
+        const std::vector<uint8_t> value =
+            Arrays::copyOfRange(tlvStructure,
+                                offset + tagSize + lengthSize,
+                                offset + tagSize + lengthSize + valueSize);
+
+        offset += tagSize + lengthSize + valueSize;
+
+        if ((tagBytes[0] & 0x20) != 0) {
+            /* Tag is constructed */
+            if (!primitiveOnly) {
+                std::vector<std::vector<uint8_t>>& values = getOrInitTagValues(tlvs, tag);
+                values.push_back(value);
+            }
+
+            std::map<const int, std::vector<std::vector<uint8_t>>> tlvs2 =
+                parse(value, primitiveOnly);
+
+            for (const auto & entry : tlvs2) {
+                std::vector<std::vector<uint8_t>>& values = getOrInitTagValues(tlvs, entry.first);
+                Arrays::addAll(values, entry.second);
+            }
+        } else {
+            /* Tag is primitive */
+            std::vector<std::vector<uint8_t>>& values = getOrInitTagValues(tlvs, tag);
+            values.push_back(value);
+        }
+
+    } while (offset < static_cast<int>(tlvStructure.size()));
+
+    return tlvs;
+}
+
+std::vector<std::vector<uint8_t>>& BerTlvUtil::getOrInitTagValues(
+    std::map<const int, std::vector<std::vector<uint8_t>>>& tlvs, const int tag)
+{
+    const auto it = tlvs.find(tag);
+
+    if (it == tlvs.end()) {
+      std::vector<std::vector<uint8_t>> values;
+      tlvs.insert({tag, values});
+    }
+
+    /* Look again and return reference */
+    return tlvs.find(tag)->second;
 }
 
 int BerTlvUtil::getTagSize(const std::vector<uint8_t>& tlvStructure, const int offset)
