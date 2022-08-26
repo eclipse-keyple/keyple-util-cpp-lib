@@ -13,7 +13,7 @@
 #include "KeypleAssert.h"
 
 /* Keyple Core Util */
-#include "ByteArrayUtil.h"
+#include "HexUtil.h"
 
 namespace keyple {
 namespace core {
@@ -126,7 +126,7 @@ Assert& Assert::isInRange(const size_t number,
 
 Assert& Assert::isHexString(const std::string& hex, const std::string& name)
 {
-    if (!ByteArrayUtil::isValidHexString(hex)) {
+    if (!HexUtil::isValid(hex)) {
         throw IllegalArgumentException(ARGUMENT + name + IS_NOT_HEX);
     }
 

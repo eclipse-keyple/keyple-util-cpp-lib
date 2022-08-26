@@ -29,6 +29,7 @@ ADD_EXECUTABLE(
     ${CMAKE_CURRENT_SOURCE_DIR}/ApduUtilTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BerTlvUtilTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ByteArrayUtilTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/HexUtilTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MainTest.cpp
 )
 

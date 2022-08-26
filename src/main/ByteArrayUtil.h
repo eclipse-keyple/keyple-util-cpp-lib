@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -28,10 +29,46 @@ namespace core {
 namespace util {
 
 /**
- * Utility class around byte arrays
+ * Utility class around byte arrays.
  */
 class KEYPLEUTIL_API ByteArrayUtil {
 public:
+      /**
+     * Extracts "nbBytes" bytes from the "bitOffset" index (<b>in bits</b>) from a byte array.
+     *
+     * @param src The source byte array.
+     * @param bitOffset The offset (<b>in bits</b>).
+     * @param nbBytes The number of bytes to extract.
+     * @return A not null byte array.
+     * @throws ArrayIndexOutOfBoundsException If "bitOffset" or "nbBytes" is out of range.
+     * @throws NegativeArraySizeException If "nbBytes" is negative.
+     * @since 2.1.0
+     */
+    static const std::vector<uint8_t> extractBytes(const std::vector<uint8_t>& src,
+                                                   const int bitOffset,
+                                                   const int nbBytes);
+
+
+    /**
+     * Converts "nbBytes" bytes located at the "offset" provided in a source byte array into an
+     * integer.
+     *
+     * <p>Caution: the result may be erroneous if "nbBytes" is not in range [1..4].
+     *
+     * @param src The source byte array.
+     * @param offset The offset (in bytes).
+     * @param nbBytes The number of bytes to extract.
+     * @param isSigned True if the resulting integer is "signed" (relevant only if "nbBytes" is in
+     *     range [1..3]).
+     * @return An int.
+     * @throws ArrayIndexOutOfBoundsException If "offset" is not in range [0..(src.length-nbBytes)]
+     * @since 2.1.0
+     */
+    static uint32_t extractInt(const std::vector<uint8_t>& src,
+                               const int offset,
+                               const int nbBytes,
+                               const bool isSigned);
+
     /**
      * Checks if the provided string is formed by an even number of hexadecimal digits. <br>
      *
@@ -42,6 +79,8 @@ public:
      *
      * @param hex A string.
      * @return true if the string matches the expected hexadecimal representation, false otherwise.
+     * @since 2.0.0
+     * @deprecated Use {@link HexUtil#isValid(String)} method instead.
      */
     static bool isValidHexString(const std::string& hex);
 
@@ -52,6 +91,7 @@ public:
      * @return A not null string.
      * @throws NullPointerException If the input string is null.
      * @since 2.0.0
+     * @deprecated To be removed.
      */
     static const std::string normalizeHexString(const std::string& hex);
 
@@ -66,128 +106,21 @@ public:
      * @return A not empty byte array.
      * @throw IllegalArgumentException If the provided string is null, empty or made of an odd
      *        number of characters.
-     * @see #isValidHexString(String)
+     * @see isValidHexString(const std::string&)
      * @since 2.0.0
+     * @deprecated Use HexUtil::toByteArray(const std::string&) method instead.
      */
     static std::vector<uint8_t> fromHex(const std::string& hex);
 
     /**
-     * Converts the provided hexadecimal string into a byte.
-     *
-     * <p>No checks are performed on the input string, except for nullity, zero length and length
-     * parity.
-     *
-     * @param hex The hexadecimal string to convert.
-     * @return The value.
-     * @throw IllegalArgumentException If the provided string is null, empty or made of an odd
-     *        number of characters.
-     * @see #isValidHexString(String)
-     * @since 2.1.0
-     */
-    static uint8_t hexToByte(const std::string& hex);
-
-    /**
-     * Converts the provided hexadecimal string into a short.
-     *
-     * <p>No checks are performed on the input string, except for nullity, zero length and length
-     * parity.
-     *
-     * @param hex The hexadecimal string to convert.
-     * @return The value.
-     * @throw IllegalArgumentException If the provided string is null, empty or made of an odd
-     *        number of characters.
-     * @see #isValidHexString(String)
-     * @since 2.1.0
-     */
-    static uint16_t hexToShort(const std::string& hex);
-
-    /**
-     * Represents the byte array in a hexadecimal string.
-     * Converts the provided hexadecimal string into an integer.
-     *
-     * @param byteArray The byte array to represent in hexadecimal.
-     * @return An hexadecimal string representation of byteArray, an empty string of if the byte
-     *         array is null.
-     * <p>No checks are performed on the input string, except for nullity, zero length and length
-     * parity.
-     *
-     * @param hex The hexadecimal string to convert.
-     * @return The value.
-     * @throw IllegalArgumentException If the provided string is null, empty or made of an odd
-     *        numberof characters.
-     * @see #isValidHexString(String)
-     * @since 2.1.0
-     */
-    static uint32_t hexToInt(const std::string& hex);
-
-    /**
-     * Converts the provided hexadecimal string into a long.
-     *
-     * <p>No checks are performed on the input string, except for nullity, zero length and length
-     * parity.
-     *
-     * @param hex The hexadecimal string to convert.
-     * @return The value.
-     * @throw IllegalArgumentException If the provided string is null, empty or made of an odd
-     *        number of characters.
-     * @see #isValidHexString(String)
-     * @since 2.1.0
-     */
-    static uint64_t hexToLong(const std::string& hex);
-
-    /**
      * Converts the provided byte array into a hexadecimal string.
      *
-     * @param tab The byte array to convert.
+     * @param src The byte array to convert.
      * @return An empty string if the byte array is null or empty.
      * @since 2.0.0
+     * @deprecated Use HexUtil::toHex(const std::vector<uint8_t>&) method instead.
      */
-    static std::string toHex(const std::vector<char>& tab);
-
-    /**
-     * Converts the provided byte array into a hexadecimal string.
-     *
-     * @param tab The byte array to convert.
-     * @return An empty string if the byte array is null or empty.
-     * @since 2.0.0
-     */
-    static std::string toHex(const std::vector<uint8_t>& tab);
-
-    /**
-     * Converts the provided byte into a hexadecimal string.
-     *
-     * @param val The value to convert.
-     * @return A not empty string.
-     * @since 2.1.0
-     */
-    static const std::string toHex(const uint8_t val);
-
-    /**
-     * Converts the provided short into a hexadecimal string.
-     *
-     * @param val The value to convert.
-     * @return A not empty string.
-     * @since 2.1.0
-     */
-    static const std::string toHex(const uint16_t val);
-
-    /**
-     * Converts the provided integer into a hexadecimal string.
-     *
-     * @param val The value to convert.
-     * @return A not empty string.
-     * @since 2.1.0
-     */
-    static const std::string toHex(const uint32_t val);
-
-    /**
-     * Converts the provided long into a hexadecimal string.
-     *
-     * @param val The value to convert.
-     * @return A not empty string.
-     * @since 2.1.0
-     */
-    static const std::string toHex(const uint64_t val) ;
+    static const std::string toHex(const std::vector<uint8_t>& src);
 
     /**
      * Converts 2 bytes located at the offset provided in the byte array into an <b>unsigned</b>
@@ -199,13 +132,15 @@ public:
      * @param bytes A byte array.
      * @param offset The position of the 2 bytes in the array.
      * @return A positive int.
-     * @throw IllegalArgumentException If the buffer has a bad length or the offset is negative.
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(bytes.length-2)]
      * @since 2.0.0
+     * @deprecated Use extractInt(const std::vector<uint8_t>&, int, int, boolean) method instead
+     *             with "nbBytes = 2" and "isSigned = false".
      */
     static int twoBytesToInt(const std::vector<uint8_t>& bytes, const int offset);
 
     /**
-     * Converts 2 bytes located at the offset provided in the byte array into an <b>signed</b>
+     * Converts 2 bytes located at the offset provided in the byte array into a <b>signed</b>
      * integer.
      *
      * <p>The 2 bytes are assumed to be in the of the most significant byte first order (aka
@@ -218,8 +153,10 @@ public:
      * @param bytes A byte array.
      * @param offset The position of the 2 bytes in the array.
      * @return A negative or positive int.
-     * @throw IllegalArgumentException If the buffer has a bad length or the offset is negative.
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(bytes.length-3)]
      * @since 2.0.0
+     * @deprecated Use extractInt(const std::vector<uint8_t>&, int, int, boolean) method instead
+     *             with "nbBytes = "2" and "isSigned = true".
      */
     static int twoBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset);
 
@@ -233,8 +170,10 @@ public:
      * @param bytes A byte array.
      * @param offset The position of the 3 bytes in the array.
      * @return A positive int.
-     * @throw IllegalArgumentException if the buffer has a bad length
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(bytes.length-3)]
      * @since 2.0.0
+     * @deprecated Use extractInt(const std::vector<uint8_t>&, int, int, boolean) method instead
+     *             with "nbBytes = 3" and "isSigned = false".
      */
     static int threeBytesToInt(const std::vector<uint8_t>& bytes, const int offset);
 
@@ -252,8 +191,10 @@ public:
      * @param bytes A byte array.
      * @param offset The position of the 3 bytes in the array.
      * @return A positive int.
-     * @throw IllegalArgumentException if the buffer has a bad length
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(bytes.length-3)]
      * @since 2.0.0
+     * @deprecated Use extractInt(const std::vector<uint8_t>&, int, int, boolean) method instead
+     *             with "nbBytes = "3" and "isSigned = true".
      */
     static int threeBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset);
 
@@ -261,34 +202,18 @@ public:
      * Converts 4 bytes located at the offset provided in the byte array into an <b>unsigned</b>
      * integer.
      *
-     * <p>The 4 bytes are assumed to be in the of the most significant byte first order (aka 'network
-     * order' or 'big-endian' or 'MSB').
+     * <p>The 4 bytes are assumed to be in the of the most significant byte first order (aka
+     * 'network order' or 'big-endian' or 'MSB').
      *
      * @param bytes A byte array.
      * @param offset The position of the 4 bytes in the array.
      * @return A positive int.
-     * @throw IllegalArgumentException if the buffer has a bad length
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(bytes.length-3)]
      * @since 2.0.0
+     * @deprecated Use extractInt(const std::vector<uint8_t>&, int, int, boolean) method instead
+     *             with "nbBytes = 4" and "isSigned = true|false".
      */
     static int fourBytesToInt(const std::vector<uint8_t>& bytes, const int offset);
-
-private:
-    /**
-     * Byte to hex string conversion table
-     */
-    static const std::vector<std::string> mByteToHex;
-
-    /**
-     * Hex digit to nibble conversion
-     */
-    static const std::vector<uint8_t> mHexToNibble;
-
-    /**
-     * (private)
-     */
-    static void checkBytesToIntConversionParams(const int size,
-                                                const std::vector<uint8_t>& bytes,
-                                                const int offset);
 };
 
 }

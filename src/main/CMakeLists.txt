@@ -22,6 +22,7 @@ ADD_LIBRARY(
     ${CMAKE_CURRENT_SOURCE_DIR}/ApduUtil.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BerTlvUtil.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ByteArrayUtil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/HexUtil.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/KeypleAssert.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/cpp/Logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/cpp/LoggerFactory.cpp

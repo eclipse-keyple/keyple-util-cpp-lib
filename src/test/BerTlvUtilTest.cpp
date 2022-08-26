@@ -18,7 +18,7 @@
 
 /* Keyple Core Util */
 #include "Arrays.h"
-#include "ByteArrayUtil.h"
+#include "HexUtil.h"
 #include "IllegalArgumentException.h"
 
 using namespace testing;
@@ -31,16 +31,6 @@ const std::string TLV1 =
     "6F238409315449432E49434131A516BF0C13C708000000001122334453070A3C2005141001";
 const std::string TLV2 =
     "6F23A516BF0C1353070A3C2005141001C70800000000112233448409315449432E49434131";
-
-// static bool mapContainsEntry(const std::map<int, std::vector<uint8_t>>& m,  const int tag)
-// {
-//     const auto it = m.find(tag);
-//     if (it != m.end()) {
-//         return true;
-//     }
-
-//     return false;
-// }
 
 static bool mapContainsEntry(const std::map<const int, const std::vector<uint8_t>>& m,
                              const int tag,
@@ -95,89 +85,89 @@ static bool vectorContainsExactly(std::vector<std::vector<uint8_t>>& v,
 
 TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags)
 {
-    auto tlvs = BerTlvUtil::parse(ByteArrayUtil::fromHex(TLV1), false);
+    auto tlvs = BerTlvUtil::parse(HexUtil::toByteArray(TLV1), false);
 
     ASSERT_TRUE(mapContainsOnlyKeys(tlvs, {0x6F, 0x84, 0xA5, 0xBF0C, 0x53, 0xC7}));
 
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0x6F], ByteArrayUtil::fromHex("8409315449432E49434131A516BF0C13C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0x84], ByteArrayUtil::fromHex("315449432E49434131")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0xA5], ByteArrayUtil::fromHex("BF0C13C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0xBF0C], ByteArrayUtil::fromHex("C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0x53], ByteArrayUtil::fromHex("0A3C2005141001")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0xC7], ByteArrayUtil::fromHex("0000000011223344")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0x6F], HexUtil::toByteArray("8409315449432E49434131A516BF0C13C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0x84], HexUtil::toByteArray("315449432E49434131")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0xA5], HexUtil::toByteArray("BF0C13C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0xBF0C], HexUtil::toByteArray("C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0x53], HexUtil::toByteArray("0A3C2005141001")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0xC7], HexUtil::toByteArray("0000000011223344")));
 }
 
 TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags2)
 {
-    auto tlvs = BerTlvUtil::parse(ByteArrayUtil::fromHex("E030C106200107021D01C106202009021D04C106206919091D01C106201008041D03C10620401D021D01C10620501E021D01"), false);
+    auto tlvs = BerTlvUtil::parse(HexUtil::toByteArray("E030C106200107021D01C106202009021D04C106206919091D01C106201008041D03C10620401D021D01C10620501E021D01"), false);
 
     ASSERT_TRUE(mapContainsOnlyKeys(tlvs, {0xE0, 0xC1}));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0xE0], ByteArrayUtil::fromHex("C106200107021D01C106202009021D04C106206919091D01C106201008041D03C10620401D021D01C10620501E021D01")));
-    ASSERT_TRUE(vectorContainsExactly(tlvs[0xC1], { ByteArrayUtil::fromHex("200107021D01"),
-                                                    ByteArrayUtil::fromHex("202009021D04"),
-                                                    ByteArrayUtil::fromHex("206919091D01"),
-                                                    ByteArrayUtil::fromHex("201008041D03"),
-                                                    ByteArrayUtil::fromHex("20401D021D01"),
-                                                    ByteArrayUtil::fromHex("20501E021D01") }));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0xE0], HexUtil::toByteArray("C106200107021D01C106202009021D04C106206919091D01C106201008041D03C10620401D021D01C10620501E021D01")));
+    ASSERT_TRUE(vectorContainsExactly(tlvs[0xC1], { HexUtil::toByteArray("200107021D01"),
+                                                    HexUtil::toByteArray("202009021D04"),
+                                                    HexUtil::toByteArray("206919091D01"),
+                                                    HexUtil::toByteArray("201008041D03"),
+                                                    HexUtil::toByteArray("20401D021D01"),
+                                                    HexUtil::toByteArray("20501E021D01") }));
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags)
 {
-    const auto tlvs = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex(TLV1), false);
+    const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), false);
 
     ASSERT_EQ(tlvs.size(), 6);
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x6F, ByteArrayUtil::fromHex("8409315449432E49434131A516BF0C13C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, ByteArrayUtil::fromHex("315449432E49434131")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0xA5, ByteArrayUtil::fromHex("BF0C13C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0xBF0C, ByteArrayUtil::fromHex("C708000000001122334453070A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, ByteArrayUtil::fromHex("0A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0xC7, ByteArrayUtil::fromHex("0000000011223344")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x6F, HexUtil::toByteArray("8409315449432E49434131A516BF0C13C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, HexUtil::toByteArray("315449432E49434131")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0xA5, HexUtil::toByteArray("BF0C13C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0xBF0C, HexUtil::toByteArray("C708000000001122334453070A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, HexUtil::toByteArray("0A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0xC7, HexUtil::toByteArray("0000000011223344")));
 }
 
 TEST(BerTlvUtilTest,
      parse_whenStructureIsValidAndPrimitiveOnlyIsTrue_shouldProvideOnlyPrimitiveTags)
 {
-    const auto tlvs = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex(TLV1), true);
+    const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), true);
 
     ASSERT_EQ(tlvs.size(), 3);
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, ByteArrayUtil::fromHex("315449432E49434131")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, ByteArrayUtil::fromHex("0A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0xC7, ByteArrayUtil::fromHex("0000000011223344")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, HexUtil::toByteArray("315449432E49434131")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, HexUtil::toByteArray("0A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0xC7, HexUtil::toByteArray("0000000011223344")));
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenTagsOrderChange_shouldProvideTheSameTags)
 {
-    const auto tlvs1 = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex(TLV1), true);
-    const auto tlvs2 = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex(TLV2), true);
+    const auto tlvs1 = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), true);
+    const auto tlvs2 = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV2), true);
 
     ASSERT_EQ(tlvs1, tlvs2);
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenTagsIdIs3Bytes_shouldProvideTheTag)
 {
-    const auto tlvs = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex("6F258409315449432E49434131A518BF0C15DFEF2C08000000001122334453070A3C2005141001"), true);
+    const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray("6F258409315449432E49434131A518BF0C15DFEF2C08000000001122334453070A3C2005141001"), true);
 
     ASSERT_EQ(tlvs.size(), 3);
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, ByteArrayUtil::fromHex("315449432E49434131")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, ByteArrayUtil::fromHex("0A3C2005141001")));
-    ASSERT_TRUE(mapContainsEntry(tlvs, 0xDFEF2C, ByteArrayUtil::fromHex("0000000011223344")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x84, HexUtil::toByteArray("315449432E49434131")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0x53, HexUtil::toByteArray("0A3C2005141001")));
+    ASSERT_TRUE(mapContainsEntry(tlvs, 0xDFEF2C, HexUtil::toByteArray("0000000011223344")));
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenStructureIsInvalid_shouldIAE)
 {
-    EXPECT_THROW(BerTlvUtil::parseSimple(ByteArrayUtil::fromHex("6F23A5"), true),
+    EXPECT_THROW(BerTlvUtil::parseSimple(HexUtil::toByteArray("6F23A5"), true),
                  IllegalArgumentException);
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenLengthFieldIsInvalid_shouldIAE)
 {
-    EXPECT_THROW(BerTlvUtil::parseSimple(ByteArrayUtil::fromHex("6F83A5"), true),
+    EXPECT_THROW(BerTlvUtil::parseSimple(HexUtil::toByteArray("6F83A5"), true),
                  IllegalArgumentException);
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue)
 {
-    const auto tlvs = BerTlvUtil::parseSimple(ByteArrayUtil::fromHex("8400"), false);
+    const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray("8400"), false);
     const auto it = tlvs.find(0x84);
 
     ASSERT_NE(it, tlvs.end());

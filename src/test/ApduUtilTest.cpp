@@ -15,12 +15,11 @@
 #include "gtest/gtest.h"
 
 #include "ApduUtil.h"
-#include "ByteArrayUtil.h"
+#include "HexUtil.h"
 
 using namespace testing;
 
 using namespace keyple::core::util;
-using namespace keyple::core::util::cpp;
 
 const uint8_t CLA = 0x11;
 const uint8_t INS = 0x22;
@@ -29,10 +28,10 @@ const uint8_t P2  = 0x44;
 const std::vector<uint8_t> DATA_IN = {0x12, 0x34, 0x56, 0x78};
 const uint8_t LE = 3;
 
-const std::vector<uint8_t> CASE1 = ByteArrayUtil::fromHex("1122334400");
-const std::vector<uint8_t> CASE2 = ByteArrayUtil::fromHex("1122334403");
-const std::vector<uint8_t> CASE3 = ByteArrayUtil::fromHex("112233440412345678");
-const std::vector<uint8_t> CASE4 = ByteArrayUtil::fromHex("11223344041234567803");
+const std::vector<uint8_t> CASE1 = HexUtil::toByteArray("1122334400");
+const std::vector<uint8_t> CASE2 = HexUtil::toByteArray("1122334403");
+const std::vector<uint8_t> CASE3 = HexUtil::toByteArray("112233440412345678");
+const std::vector<uint8_t> CASE4 = HexUtil::toByteArray("11223344041234567803");
 
 TEST(ApduUtilTest, build_whenDataInAndLeAreNull_shouldReturnCase1)
 {

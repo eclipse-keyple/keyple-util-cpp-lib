@@ -16,8 +16,11 @@
 
 #include "ByteArrayUtil.h"
 
-/* Util */
+/* Keyple Core Util */
+#include "Arrays.h"
+#include "ArrayIndexOutOfBoundsException.h"
 #include "IllegalArgumentException.h"
+#include "NegativeArraySizeException.h"
 
 using namespace testing;
 
@@ -28,19 +31,112 @@ using namespace keyple::core::util::cpp::exception;
 const std::string HEXSTRING_ODD  = "0102030";
 const std::string HEXSTRING_BAD  = "010203ABGH8+";
 const std::string HEXSTRING_GOOD = "1234567890ABCDEFFEDCBA0987654321";
-const std::vector<uint8_t> BYTEARRAY_LEN_16 = {
-0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0xFE, 0xDC, 0xBA, 0x09, 0x87, 0x65, 0x43, 0x21
-};
-
 const std::vector<uint8_t> BYTEARRAY_LEN_0 = {};
 const std::vector<uint8_t> BYTEARRAY_LEN_1 = {0x12};
 const std::vector<uint8_t> BYTEARRAY_LEN_2 = {0x12, 0x34};
 const std::vector<uint8_t> BYTEARRAY_LEN_3 = {0x12, 0x34, 0x56};
 const std::vector<uint8_t> BYTEARRAY_LEN_4 = {0x12, 0x34, 0x56, 0x78};
+const std::vector<uint8_t> BYTEARRAY_LEN_16 = {
+    0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0xFE, 0xDC, 0xBA, 0x09, 0x87, 0x65, 0x43, 0x21
+};
 
-TEST(ByteArrayUtilTest, isValidHexString_null)
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsOutOfRange_shouldThrowAIOOBE)
 {
-    ASSERT_FALSE(ByteArrayUtil::isValidHexString(""));
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 16, 1),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsOutOfRange_shouldThrowAIOOBE2)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 9, 1),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsNegative_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), -8, 1),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsNegative_shouldThrowAIOOBE2)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), -1, 1),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenNbBytesIsOutOfRange_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 0, 2),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenNbBytesIsOutOfRange_shouldThrowAIOOBE2)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 1, 2),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenNbBytesIsNegative_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 0, -1),
+                 NegativeArraySizeException);
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenNbBytesIsNegative_shouldThrowAIOOBE2)
+{
+    EXPECT_THROW(ByteArrayUtil::extractBytes(std::vector<uint8_t>(1), 1, -1),
+                 NegativeArraySizeException);
+}
+
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsMultipleOf8_shouldBeSuccessful)
+{
+    const std::vector<uint8_t> src = {0xF1, 0xF2, 0xF3};
+
+    ASSERT_TRUE(Arrays::equals(ByteArrayUtil::extractBytes(src, 8, 1), {0xF2}));
+    ASSERT_TRUE(Arrays::equals(ByteArrayUtil::extractBytes(src, 8, 2), {0xF2, 0xF3}));
+}
+
+TEST(ByteArrayUtilTest, extractBytes_whenBitOffsetIsNotMultipleOf8_shouldBeSuccessful)
+{
+    const std::vector<uint8_t> src = {0xF1, 0xF2, 0xF3};
+
+    ASSERT_TRUE(Arrays::equals(ByteArrayUtil::extractBytes(src, 6, 1), {0x7C}));
+    ASSERT_TRUE(Arrays::equals(ByteArrayUtil::extractBytes(src, 6, 2), {0x7C, 0xBC}));
+    ASSERT_TRUE(Arrays::equals(ByteArrayUtil::extractBytes(src, 3, 1), {0x8F}));
+}
+
+TEST(ByteArrayUtilTest, extractInt_whenOffsetIsNegative_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractInt(std::vector<uint8_t>(1), -1, 1, true),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractInt_whenOffsetIsGreaterThanSrcLengthMinusNbBytes_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractInt(std::vector<uint8_t>(1), 1, 1, true),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractInt_whenNbBytesIsTooBig_shouldThrowAIOOBE)
+{
+    EXPECT_THROW(ByteArrayUtil::extractInt(std::vector<uint8_t>(1), 0, 2, true),
+                 ArrayIndexOutOfBoundsException);
+}
+
+TEST(ByteArrayUtilTest, extractInt_whenInputIsOk_shouldBeSuccessful)
+{
+    const std::vector<uint8_t> src = {0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6};
+
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 1, true), 0xFFFFFFF2);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 1, false), 0xF2);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 2, true), 0xFFFFF2F3);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 2, false), 0xF2F3);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 3, true), 0xFFF2F3F4);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 3, false), 0xF2F3F4);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 4, true), 0xF2F3F4F5);
+    ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 4, false), 0xF2F3F4F5);
 }
 
 TEST(ByteArrayUtilTest, isValidHexString_valid)
@@ -69,6 +165,7 @@ TEST(ByteArrayUtilTest, fromHex_bad_hex)
 {
     /* No verification is being carried out at the moment */
     const std::vector<uint8_t> bytes = ByteArrayUtil::fromHex(HEXSTRING_BAD);
+
     /* Just check that the conversion is wrong */
     const std::string hex = ByteArrayUtil::toHex(bytes);
 
@@ -83,111 +180,10 @@ TEST(ByteArrayUtilTest, fromHex_good_hex)
     ASSERT_EQ(bytes, BYTEARRAY_LEN_16);
 }
 
-TEST(ByteArrayUtilTest, hexToByte_whenHexIsEmpty_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToByte(""), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToByte_whenHexLengthIsOdd_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToByte("1"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToByte_whenHexLengthIsGreaterThan2_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToByte("1234"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToByte_whenHexIsValid_shouldBeSuccessful)
-{
-    ASSERT_EQ(ByteArrayUtil::hexToByte("AB"),  0xAB);
-    ASSERT_EQ(ByteArrayUtil::hexToByte("CD"),  0xCD);
-    ASSERT_EQ(ByteArrayUtil::hexToByte("EF"),  0xEF);
-    ASSERT_EQ(ByteArrayUtil::hexToByte("ab"),  0xAB);
-    ASSERT_EQ(ByteArrayUtil::hexToByte("cd"),  0xCD);
-    ASSERT_EQ(ByteArrayUtil::hexToByte("ef"),  0xEF);
-}
-
-TEST(ByteArrayUtilTest, hexToShort_whenHexIsEmpty_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToShort(""), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToShort_whenHexLengthIsOdd_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToShort("1"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToShort_whenHexLengthIsGreaterThan4_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToShort("123456"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToShort_whenHexIsValid_shouldBeSuccessful)
-{
-    ASSERT_EQ(ByteArrayUtil::hexToShort("ABCD"), 0xABCD);
-    ASSERT_EQ(ByteArrayUtil::hexToShort("EF"), 0xEF);
-    ASSERT_EQ(ByteArrayUtil::hexToShort("abcd"), 0xABCD);
-    ASSERT_EQ(ByteArrayUtil::hexToShort("ef"), 0xEF);
-}
-
-TEST(ByteArrayUtilTest, hexToInt_whenHexIsEmpty_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToInt(""), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToInt_whenHexLengthIsOdd_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToInt("1"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToInt_whenHexLengthIsGreaterThan8_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToInt("123456789A"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToInt_whenHexIsValid_shouldBeSuccessful)
-{
-    ASSERT_EQ(ByteArrayUtil::hexToInt("FE"), 0xFE);
-    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF7"), 0xFEF7);
-    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF712"), 0xFEF712);
-    ASSERT_EQ(ByteArrayUtil::hexToInt("FEF71234"), 0xFEF71234);
-    ASSERT_EQ(ByteArrayUtil::hexToInt("ABCDEF"), 0xABCDEF);
-    ASSERT_EQ(ByteArrayUtil::hexToInt("abcdef"), 0xABCDEF);
-}
-
-TEST(ByteArrayUtilTest, hexToLong_whenHexIsEmpty_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToLong(""), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToLong_whenHexLengthIsOdd_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToLong("1"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToLong_whenHexLengthIsGreaterThan16_shouldThrowIAE)
-{
-    EXPECT_THROW(ByteArrayUtil::hexToLong("123456789ABCDEF012"), IllegalArgumentException);
-}
-
-TEST(ByteArrayUtilTest, hexToLong_whenHexIsValid_shouldBeSuccessful)
-{
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FE"), 0xFEL);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7"), 0xFEF7L);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF712"), 0xFEF712L);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF71234"), 0xFEF71234L);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456"), 0xFEF7123456L);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF712345678"), 0xFEF712345678L);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456789A"), 0xFEF7123456789AL);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("FEF7123456789ABC"), 0xFEF7123456789ABCL);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("ABCDEF"), 0xABCDEFL);
-    ASSERT_EQ(ByteArrayUtil::hexToLong("abcdef"), 0xABCDEFL);
-}
 
 TEST(ByteArrayUtilTest, toHex_empty)
 {
-    const std::vector<uint8_t> bytes;
+    const std::vector<uint8_t> bytes = std::vector<uint8_t>(0);
     const std::string hex = ByteArrayUtil::toHex(bytes);
 
     ASSERT_EQ(static_cast<int>(hex.size()), 0);
@@ -200,55 +196,22 @@ TEST(ByteArrayUtilTest, toHex_bytearray_good)
     ASSERT_EQ(hex, HEXSTRING_GOOD);
 }
 
-TEST(ByteArrayUtilTest, toHex_byte)
-{
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint8_t>(0xFE)), "FE");
-}
-
-TEST(ByteArrayUtilTest, toHex_short)
-{
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint16_t>(0xFE)), "FE");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint16_t>(0xFE34)), "FE34");
-}
-
-TEST(ByteArrayUtilTest, toHex_int)
-{
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE)), "FE");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE34)), "FE34");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE3456)), "FE3456");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint32_t>(0xFE345678)), "FE345678");
-}
-
-TEST(ByteArrayUtilTest, toHex_long)
-{
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFEL)), "FE");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE34L)), "FE34");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456L)), "FE3456");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE345678L)), "FE345678");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789AL)), "FE3456789A");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCL)), "FE3456789ABC");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEL)), "FE3456789ABCDE");
-    ASSERT_EQ(ByteArrayUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEF0L)), "FE3456789ABCDEF0");
-}
-
-TEST(ByteArrayUtilTest, twoBytesToInt_empty)
-{
-    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_0, 0), IllegalArgumentException);
-}
-
 TEST(ByteArrayUtilTest, twoBytesToInt_negative_offset)
 {
-    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_16, -1), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_16, -1),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, twoBytesToInt_too_short_buffer_1)
 {
-    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_1, 0), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_1, 0),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, twoBytesToInt_too_short_buffer_2)
 {
-    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_3, 2), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::twoBytesToInt(BYTEARRAY_LEN_3, 2),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, twoBytesToInt_buffer_ok_1)
@@ -301,24 +264,22 @@ TEST(ByteArrayUtilTest, twoBytesSignedToInt_buffer_ok_2)
     ASSERT_EQ(value, -28501);
 }
 
-TEST(ByteArrayUtilTest, threeBytesToInt_empty)
-{
-    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_0, 0), IllegalArgumentException);
-}
-
 TEST(ByteArrayUtilTest, threeBytesToInt_negative_offset)
 {
-    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_16, -1), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_16, -1),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, threeBytesToInt_too_short_buffer_1)
 {
-    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_2, 0), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_2, 0),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, threeBytesToInt_too_short_buffer_2)
 {
-    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_3, 1), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::threeBytesToInt(BYTEARRAY_LEN_3, 1),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, threeBytesToInt_buffer_ok_1)
@@ -371,24 +332,22 @@ TEST(ByteArrayUtilTest, threeBytesSignedToInt_buffer_ok_2)
     ASSERT_EQ(value, -7296051);
 }
 
-TEST(ByteArrayUtilTest, fourBytesToInt_empty)
-{
-    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_0, 0), IllegalArgumentException);
-}
-
 TEST(ByteArrayUtilTest, fourBytesToInt_negative_offset)
 {
-    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_16, -1), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_16, -1),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, fourBytesToInt_too_short_buffer_1)
 {
-    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_3, 0), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_3, 0),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, fourBytesToInt_too_short_buffer_2)
 {
-    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_4, 1), IllegalArgumentException);
+    EXPECT_THROW(ByteArrayUtil::fourBytesToInt(BYTEARRAY_LEN_4, 1),
+                 ArrayIndexOutOfBoundsException);
 }
 
 TEST(ByteArrayUtilTest, fourBytesToInt_buffer_ok_1)
