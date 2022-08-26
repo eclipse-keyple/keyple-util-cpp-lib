@@ -139,6 +139,38 @@ TEST(ByteArrayUtilTest, extractInt_whenInputIsOk_shouldBeSuccessful)
     ASSERT_EQ(ByteArrayUtil::extractInt(src, 1, 4, false), 0xF2F3F4F5);
 }
 
+TEST(ByteArrayUtilTest, quals_whenArraysHaveNotTheSameLength_shouldReturnFalse)
+{
+    std::vector<uint8_t> tab1(1);
+    std::vector<uint8_t> tab2(2);
+
+    ASSERT_FALSE(ByteArrayUtil::equals(tab1, tab2));
+}
+
+TEST(ByteArrayUtilTest, quals_whenArraysHaveNotTheSameContent_shouldReturnFalse)
+{
+    std::vector<uint8_t> tab1 = {1};
+    std::vector<uint8_t> tab2 = {2};
+
+    ASSERT_FALSE(ByteArrayUtil::equals(tab1, tab2));
+}
+
+TEST(ByteArrayUtilTest, quals_whenArraysHaveTheSameContent_shouldReturnTrue)
+{
+    std::vector<uint8_t> tab1 = {1};
+    std::vector<uint8_t> tab2 = {1};
+
+    ASSERT_TRUE(ByteArrayUtil::equals(tab1, tab2));
+}
+
+TEST(ByteArrayUtilTest, quals_whenArraysHaveSameRef_shouldReturnTrue)
+{
+    std::vector<uint8_t> tab1(1);
+    std::vector<uint8_t> tab2 = tab1;
+
+    ASSERT_TRUE(ByteArrayUtil::equals(tab1, tab2));
+}
+
 TEST(ByteArrayUtilTest, isValidHexString_valid)
 {
     ASSERT_TRUE(ByteArrayUtil::isValidHexString("0123456789ABCDEF"));

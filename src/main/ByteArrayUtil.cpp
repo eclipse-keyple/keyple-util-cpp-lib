@@ -102,6 +102,25 @@ uint32_t ByteArrayUtil::extractInt(const std::vector<uint8_t>& src,
     return (uint32_t)val;
 }
 
+bool ByteArrayUtil::equals(const std::vector<uint8_t>& tab1, const std::vector<uint8_t> tab2)
+{
+    if (tab1 == tab2) {
+        return true;
+    }
+
+    if (tab1.size() != tab2.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < static_cast<int>(tab1.size()); i++) {
+        if (tab1[i] != tab2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool ByteArrayUtil::isValidHexString(const std::string& hex)
 {
     return HexUtil::isValid(hex);

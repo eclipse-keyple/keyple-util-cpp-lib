@@ -70,6 +70,15 @@ public:
                                const bool isSigned);
 
     /**
+     * Compares two byte arrays and return true if they have the same reference or the same content.
+     *
+     * @param tab1 The first byte array.
+     * @param tab2 The second byte array.
+     * @return True if they have the same reference or the same content.
+     */
+    static bool equals(const std::vector<uint8_t>& tab1, const std::vector<uint8_t> tab2);
+
+    /**
      * Checks if the provided string is formed by an even number of hexadecimal digits. <br>
      *
      * <ul>
