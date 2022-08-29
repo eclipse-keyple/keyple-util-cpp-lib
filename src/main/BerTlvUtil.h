@@ -14,6 +14,7 @@
 
 #include <map>
 #include <vector>
+#include <cstdint>
 
  /* Core */
 #include "KeypleUtilExport.h"
