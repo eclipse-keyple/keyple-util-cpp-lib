@@ -39,7 +39,7 @@ const std::string Logger::getCurrentTimestamp()
     using std::chrono::system_clock;
     auto currentTime = std::chrono::system_clock::now();
     char buffer1[21];
-    char buffer2[26];
+    char buffer2[25];
 
     auto transformed = currentTime.time_since_epoch().count() / 1000000;
     auto millis = transformed % 1000;
