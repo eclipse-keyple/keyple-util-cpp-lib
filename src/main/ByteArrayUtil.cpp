@@ -62,6 +62,34 @@ const std::vector<uint8_t> ByteArrayUtil::extractBytes(const std::vector<uint8_t
     return dest;
 }
 
+const std::vector<uint8_t> ByteArrayUtil::extractBytes(const uint64_t src, const int nbBytes)
+{
+    if (nbBytes < 0) {
+        throw NegativeArraySizeException("negative array size");
+    }
+
+    std::vector<uint8_t> data(nbBytes);
+    int shift = 0;
+    int i = nbBytes - 1;
+
+    while (i >= 0) {
+        data[i] = ((src >> shift) & 0xFF);
+        shift += 8;
+        i--;
+    }
+
+    return data;
+}
+
+uint16_t ByteArrayUtil::extractShort(const std::vector<uint8_t>& src, const int offset)
+{
+    if (offset < 0 || offset > static_cast<int>(src.size() - 2)) {
+        throw ArrayIndexOutOfBoundsException("offset not in range [0...(src.size() - 2)");
+    }
+
+    return ((src[offset] & 0xFF) << 8) | (src[offset + 1] & 0xFF);
+}
+
 uint32_t ByteArrayUtil::extractInt(const std::vector<uint8_t>& src,
                                    const int offset,
                                    const int nbBytes,
@@ -100,6 +128,51 @@ uint32_t ByteArrayUtil::extractInt(const std::vector<uint8_t>& src,
     }
 
     return (uint32_t)val;
+}
+
+uint64_t ByteArrayUtil::extractLong(const std::vector<uint8_t>& src,
+                                    const int offset,
+                                    const int nbBytes,
+                                    const bool isSigned)
+{
+    int lOffset = offset;
+    int lNbBytes = nbBytes;
+
+
+    if (lOffset < 0 || lOffset > static_cast<int>(src.size() - lNbBytes)) {
+        throw ArrayIndexOutOfBoundsException("offset not in range [0...(src.size() - nbBytes)");
+    }
+
+    uint64_t val = 0L;
+    uint64_t complement = 0xFFFFFFFFFFFFFFFF;
+    bool negative = false;
+
+    /* Get value */
+    while (lNbBytes > 0) {
+        /* Check MSB byte negativeness */
+        negative = negative ? true : ((src[lOffset] & 0xFF) > 0x7F ? true : false);
+        val |= (((uint64_t)(src[lOffset++] & 0xFF)) << (8 * (--lNbBytes)));
+        complement &= ~(((uint64_t)0xFF) << 8 * lNbBytes);
+    }
+
+    /* If signed, add complement */
+    if (isSigned && negative) {
+        val |= complement;
+    }
+
+    return (uint64_t)val;
+}
+
+void ByteArrayUtil::copyBytes(const uint64_t src,
+                              std::vector<uint8_t>& dest,
+                              const int offset,
+                              const int nbBytes)
+{
+    if (offset < 0 || offset > static_cast<int>(dest.size() - nbBytes)) {
+        throw ArrayIndexOutOfBoundsException("offset not in range [0...(dest.size() - nbBytes)");
+    }
+
+    System::arraycopy(extractBytes(src, nbBytes), 0, dest, offset, nbBytes);
 }
 
 bool ByteArrayUtil::isValidHexString(const std::string& hex)
