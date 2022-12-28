@@ -36,7 +36,7 @@ inline std::shared_ptr<To> reinterpret_pointer_cast(std::shared_ptr<From> const 
 inline std::ostream& operator<<(std::ostream& os, const uint8_t v)
 {
     os << static_cast<int>(v)
-       << "(0x" << std::hex << std::setfill('0') << std::setw(2)
+       << "(0x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
        << static_cast<int>(v) << ")";
 
     return os;
@@ -45,7 +45,7 @@ inline std::ostream& operator<<(std::ostream& os, const uint8_t v)
 inline std::ostream& operator<<(std::ostream& os, const std::vector<uint8_t>& v)
 {
     for (int i = 0; i < static_cast<int>(v.size()); i++)
-        os << std::hex << std::setfill('0') << std::setw(2)
+        os << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
            << static_cast<int>(v[i]);
 
     return os;
