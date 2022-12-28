@@ -85,7 +85,7 @@ public:
      */
     static std::vector<uint8_t> copyOf(const std::vector<uint8_t>& original, const size_t size)
     {
-        std::vector<uint8_t> vec(size);
+        std::vector<uint8_t> vec;
         std::copy(original.begin(), original.begin() + size, std::back_inserter(vec));
 
         return vec;
