@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -77,6 +77,18 @@ public:
             hash ^= *i;
 
         return hash;
+    }
+
+    /**
+     * Copies the specified array, truncating or padding with false (if necessary) so the copy has
+     * the specified length.
+     */
+    static std::vector<uint8_t> copyOf(const std::vector<uint8_t>& original, const size_t size)
+    {
+        std::vector<uint8_t> vec(size);
+        std::copy(original.begin(), original.begin() + size, std::back_inserter(vec));
+
+        return vec;
     }
 
     static std::vector<char> copyOfRange(const std::vector<char>& original,
