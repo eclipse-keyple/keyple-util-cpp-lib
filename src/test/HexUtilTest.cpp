@@ -150,7 +150,7 @@ TEST(HexUtilTest, toLong_whenHexIsValid_shouldBeSuccessful)
 
 TEST(HexUtilTest, toHex_byte_array)
 {
-    ASSERT_EQ(HexUtil::toHex({static_cast<uint8_t>(0xFE)}), "FE");
+    ASSERT_EQ(HexUtil::toHex(static_cast<uint8_t>(0xFE)), "FE");
 }
 
 TEST(HexUtilTest, toHex_byte)

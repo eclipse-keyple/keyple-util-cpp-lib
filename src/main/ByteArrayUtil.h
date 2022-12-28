@@ -48,10 +48,35 @@ public:
                                                    const int bitOffset,
                                                    const int nbBytes);
 
+     /**
+     * Extracts the least significant bytes (LSB) of a number into a byte array.
+     *
+     * <p>Caution: the result may be erroneous if the number of bytes to extract is greater than the
+     * number of bytes associated to the input number (e.g. 2 bytes max for a "short", 4 bytes max
+     * for an "integer" or 8 bytes max for a "long").
+     *
+     * @param src The source.
+     * @param nbBytes The number of bytes to extract.
+     * @return An empty array if "nbBytes" is equal to 0.
+     * @throw NegativeArraySizeException If "nbBytes" is negative.
+     * @since 2.3.0
+     */
+    static const std::vector<uint8_t> extractBytes(const uint64_t src, const int nbBytes);
+
+    /**
+     * Extracts a 2-byte "short" located at a specific "offset" in a source byte array.
+     *
+     * @param src The source byte array.
+     * @param offset The offset (in bytes).
+     * @return A short.
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(src.length-2)]
+     * @since 2.3.0
+     */
+    static uint16_t extractShort(const std::vector<uint8_t>& src, const int offset);
 
     /**
      * Converts "nbBytes" bytes located at the "offset" provided in a source byte array into an
-     * integer.
+     * "integer".
      *
      * <p>Caution: the result may be erroneous if "nbBytes" is not in range [1..4].
      *
@@ -68,6 +93,43 @@ public:
                                const int offset,
                                const int nbBytes,
                                const bool isSigned);
+
+    /**
+     * Converts "nbBytes" bytes located at the "offset" provided in a source byte array into a
+     * "long".
+     *
+     * <p>Caution: the result may be erroneous if "nbBytes" is not in range [1..8].
+     *
+     * @param src The source byte array.
+     * @param offset The offset (in bytes).
+     * @param nbBytes The number of bytes to extract.
+     * @param isSigned True if the resulting integer is "signed" (relevant only if "nbBytes" is in
+     *        range [1..7]).
+     * @return A long.
+     * @throw ArrayIndexOutOfBoundsException If "offset" is not in range [0..(src.length-nbBytes)]
+     * @since 2.3.0
+     */
+    static uint64_t extractLong(const std::vector<uint8_t>& src,
+                                const int offset,
+                                const int nbBytes,
+                                const bool isSigned);
+
+    /**
+     * Copy the least significant bytes (LSB) of a number (byte, short, integer or long) into a byte
+     * array at a specific offset.
+     *
+     * @param src The number.
+     * @param dest The target byte array.
+     * @param offset The offset (in bytes).
+     * @param nbBytes The number of bytes to copy.
+     * @throws NegativeArraySizeException If "nbBytes" is negative.
+     * @throws ArrayIndexOutOfBoundsException If "offset" is not in range [0..(dest.length-nbBytes)]
+     * @since 2.3.0
+     */
+    static void copyBytes(const uint64_t src,
+                          std::vector<uint8_t>& dest,
+                          const int offset,
+                          const int nbBytes);
 
     /**
      * Checks if the provided string is formed by an even number of hexadecimal digits. <br>
