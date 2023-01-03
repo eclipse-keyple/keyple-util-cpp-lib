@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['unsupportedoperationexception_0',['UnsupportedOperationException',['../classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_unsupported_operation_exception.html#ada60b7be77b95efb103920810503da62',1,'keyple::core::util::cpp::exception::UnsupportedOperationException::UnsupportedOperationException()'],['../classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_unsupported_operation_exception.html#a4141c66574ce5f0ccbfd6f467beb4566',1,'keyple::core::util::cpp::exception::UnsupportedOperationException::UnsupportedOperationException(const std::string &amp;message)'],['../classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_unsupported_operation_exception.html#a0371cbd7de16807683ce9c2cdefe4007',1,'keyple::core::util::cpp::exception::UnsupportedOperationException::UnsupportedOperationException(const std::string &amp;message, const std::shared_ptr&lt; Exception &gt; cause)']]]
+];
