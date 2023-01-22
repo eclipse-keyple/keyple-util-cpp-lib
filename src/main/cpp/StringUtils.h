@@ -62,6 +62,17 @@ public:
 
         return tokens;
     }
+
+    static inline const std::string tolower(const std::string& string)
+    {
+        std::string copy = string;
+        std::transform(copy.begin(),
+                       copy.end(),
+                       copy.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+
+        return copy;
+    }
 };
 
 }
