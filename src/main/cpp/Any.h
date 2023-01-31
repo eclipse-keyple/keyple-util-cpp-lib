@@ -373,7 +373,7 @@ protected:
     }
 
 private:
-    storage_union storage; // on offset(0) so no padding for align
+    storage_union storage = { 0 }; // on offset(0) so no padding for align
     vtable_type*  vtable;
 
     template<typename ValueType, typename T>

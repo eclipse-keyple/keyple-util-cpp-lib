@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -69,7 +69,7 @@ public:
         std::transform(copy.begin(),
                        copy.end(),
                        copy.begin(),
-                       [](unsigned char c){ return std::tolower(c); });
+                       [](unsigned char c){ return static_cast<char>(std::tolower(c)); });
 
         return copy;
     }

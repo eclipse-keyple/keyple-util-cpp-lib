@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -16,11 +16,14 @@
 #include <string>
 #include <vector>
 
+/* Keyple Core Util */
+#include "KeypleUtilExport.h"
+
 namespace keyple {
 namespace core {
 namespace util {
 
-class HexUtil final {
+class KEYPLEUTIL_API HexUtil final {
 public:
     /**
      * Checks if a string is formed by an even number of hexadecimal digits.
