@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -18,6 +18,7 @@
 #include <iostream>
 
 /* Keyple Core Util */
+#include "IllegalArgumentException.h"
 #include "IndexOutOfBoundsException.h"
 
 namespace keyple {
@@ -109,12 +110,29 @@ public:
                                             const size_t from,
                                             const size_t to)
     {
-        if ((to - from) > original.size()) {
-            throw IndexOutOfBoundsException("index out of bound");
+        if (from > original.size()) {
+
+            throw IndexOutOfBoundsException("from > original.size()");
+        }
+
+        if (from > to) {
+
+            throw IllegalArgumentException("from > to");
         }
 
         std::vector<uint8_t> vec;
-        std::copy(original.begin() + from, original.begin() + to, std::back_inserter(vec));
+
+        if (to <= original.size()) {
+
+            std::copy(original.begin() + from, original.begin() + to, std::back_inserter(vec));
+
+        } else {
+
+            std::copy(original.begin() + from,
+                      original.begin() + original.size(),
+                      std::back_inserter(vec));
+            vec.resize(to - from, 0);
+        }
 
         return vec;
     }
@@ -145,6 +163,46 @@ public:
     {
         for (const auto& v : a) {
             if (v != b) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    template <typename T>
+    static bool startsWith(const std::vector<T>& a, const std::vector<T>& b)
+    {
+        if (b.size() > a.size()) {
+
+            return false;
+        }
+
+        for (size_t i = 0; i < b.size(); i++) {
+
+            if (a[i] != b[i]) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    template <typename T>
+    static bool endsWith(const std::vector<T>& a, const std::vector<T>& b)
+    {
+        if (b.size() > a.size()) {
+
+            return false;
+        }
+
+        const size_t offset = a.size() - b.size();
+
+        for (size_t i = 0; i < b.size(); i++) {
+
+            if (a[offset + i] != b[i]) {
+
                 return false;
             }
         }
