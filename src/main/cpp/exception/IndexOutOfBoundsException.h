@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "Exception.h"
+#include "RuntimeException.h"
 
 namespace keyple {
 namespace core {
@@ -20,18 +20,18 @@ namespace util {
 namespace cpp {
 namespace exception {
 
-class IndexOutOfBoundsException : public Exception {
+class IndexOutOfBoundsException : public RuntimeException {
 public:
     /**
      *
      */
-    IndexOutOfBoundsException(const std::string& message) : Exception(message) {}
+    IndexOutOfBoundsException(const std::string& message) : RuntimeException(message) {}
 
     /**
      *
      */
     IndexOutOfBoundsException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : Exception(message, cause) {}
+    : RuntimeException(message, cause) {}
 };
 
 }
