@@ -1,5 +1,5 @@
 # *************************************************************************************************
-# Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                         *
+# Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                         *
 #                                                                                                 *
 # See the NOTICE file(s) distributed with this work for additional information regarding          *
 # copyright ownership.                                                                            *
@@ -15,11 +15,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
 SET(CMAKE_PROJECT_VERSION_MAJOR "2")
 SET(CMAKE_PROJECT_VERSION_MINOR "3")
-SET(CMAKE_PROJECT_VERSION_PATCH "1")
+SET(CMAKE_PROJECT_VERSION_PATCH "0")
+SET(CMAKE_PROJECT_VERSION_TWEAK "3")
 
 SET(CMAKE_PROJECT_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.
                            ${CMAKE_PROJECT_VERSION_MINOR}.
-                           ${CMAKE_PROJECT_VERSION_PATCH}")
+                           ${CMAKE_PROJECT_VERSION_PATCH}.
+                           ${CMAKE_PROJECT_VERSION_TWEAK}")
 
 SET(PACKAGE_NAME "KeypleUtil")
 SET(PACKAGE_VERSION ${CMAKE_PROJECT_VERSION})
