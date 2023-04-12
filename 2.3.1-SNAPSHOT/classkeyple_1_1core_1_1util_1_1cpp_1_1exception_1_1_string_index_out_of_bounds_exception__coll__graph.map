@@ -1,6 +1,7 @@
 <map id="keyple::core::util::cpp::exception::StringIndexOutOfBoundsException" name="keyple::core::util::cpp::exception::StringIndexOutOfBoundsException">
-<area shape="rect" id="node1" title=" " alt="" coords="5,273,187,329"/>
-<area shape="rect" id="node2" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_index_out_of_bounds_exception.html" title=" " alt="" coords="12,169,180,225"/>
-<area shape="rect" id="node3" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_exception.html" title=" " alt="" coords="10,80,182,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="45,5,147,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="25,363,206,419"/>
+<area shape="rect" id="node2" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_index_out_of_bounds_exception.html" title=" " alt="" coords="31,259,199,315"/>
+<area shape="rect" id="node3" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_runtime_exception.html" title=" " alt="" coords="5,169,225,211"/>
+<area shape="rect" id="node4" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_exception.html" title=" " alt="" coords="29,80,201,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="65,5,166,32"/>
 </map>

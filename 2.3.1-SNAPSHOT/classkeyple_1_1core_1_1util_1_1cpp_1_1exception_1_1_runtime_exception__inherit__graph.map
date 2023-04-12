@@ -1,7 +1,10 @@
 <map id="keyple::core::util::cpp::exception::RuntimeException" name="keyple::core::util::cpp::exception::RuntimeException">
-<area shape="rect" id="node1" title=" " alt="" coords="375,53,595,94"/>
-<area shape="rect" id="node4" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_negative_array_size_exception.html" title=" " alt="" coords="654,5,822,61"/>
-<area shape="rect" id="node5" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_unsupported_operation_exception.html" title=" " alt="" coords="643,85,833,141"/>
-<area shape="rect" id="node2" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_exception.html" title=" " alt="" coords="155,53,327,94"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,60,107,87"/>
+<area shape="rect" id="node1" title=" " alt="" coords="375,133,595,174"/>
+<area shape="rect" id="node4" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_index_out_of_bounds_exception.html" title=" " alt="" coords="654,45,822,101"/>
+<area shape="rect" id="node7" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_negative_array_size_exception.html" title=" " alt="" coords="654,125,822,181"/>
+<area shape="rect" id="node8" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_unsupported_operation_exception.html" title=" " alt="" coords="643,205,833,261"/>
+<area shape="rect" id="node2" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_exception.html" title=" " alt="" coords="155,133,327,174"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,140,107,167"/>
+<area shape="rect" id="node5" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_array_index_out_of_bounds_exception.html" title=" " alt="" coords="883,5,1061,61"/>
+<area shape="rect" id="node6" href="$classkeyple_1_1core_1_1util_1_1cpp_1_1exception_1_1_string_index_out_of_bounds_exception.html" title=" " alt="" coords="881,85,1063,141"/>
 </map>
