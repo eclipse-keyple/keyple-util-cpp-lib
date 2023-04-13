@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -96,15 +96,18 @@ uint32_t ByteArrayUtil::extractInt(const std::vector<uint8_t>& src,
                                    const bool isSigned)
 {
     if (offset < 0) {
+
         throw ArrayIndexOutOfBoundsException("negative offset");
     }
 
     if ((offset + nbBytes) > static_cast<int>(src.size())) {
+
         throw ArrayIndexOutOfBoundsException("offset + nbBytes > src size");
     }
 
     /* C++ - doesn't make sense to have nbBytes > int size */
     if (nbBytes > 4) {
+
         throw IllegalArgumentException("nbBytes can't be bigger than 4");
     }
 
@@ -114,16 +117,19 @@ uint32_t ByteArrayUtil::extractInt(const std::vector<uint8_t>& src,
     int lNbBytes = nbBytes;
     bool negative = false;
 
+    /* Check MSB byte negativeness */
+    negative = src[lOffset] > 0x7F;
+
     /* Get value */
     while (lNbBytes > 0) {
-        /* Check MSB byte negativeness */
-        negative = negative ? true : ((src[lOffset] & 0xFF) > 0x7F ? true : false);
+
         val |= ((src[lOffset++] & 0xFF) << (8 * (--lNbBytes)));
         complement &= ~(0xFF << 8 * lNbBytes);
     }
 
     /* If signed, add complement */
     if (isSigned && negative) {
+
         val |= complement;
     }
 
