@@ -25,7 +25,7 @@
 namespace std {
 
 // when using a compiler that does not support C++17, define our own implementation of reinterpret_pointer_cast
-#if !defined(_WIN32) &&  __cplusplus < 201703L
+#if !defined(_WIN32) && !defined(__APPLE__) && __cplusplus < 201703L
 template <typename To, typename From>
 inline std::shared_ptr<To> reinterpret_pointer_cast(std::shared_ptr<From> const & ptr) noexcept
 {

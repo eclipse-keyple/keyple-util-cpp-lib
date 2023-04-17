@@ -29,7 +29,7 @@ public:
         va_list args;
 
         va_start(args, format);
-        vsprintf(buf, format, args);
+        vsnprintf(buf, sizeof(buf), format, args);
         va_end(args);
 
         return buf;

@@ -49,7 +49,7 @@ const std::string Logger::getCurrentTimestamp()
     auto timeinfo = localtime(&tt);
 
     strftime(buffer1, sizeof(buffer1), "%F %H:%M:%S", timeinfo);
-    sprintf(buffer2, "%s:%03d", buffer1, (int)millis);
+    snprintf(buffer2, sizeof(buffer2), "%s:%03d", buffer1, (int)millis);
 
     return std::string(buffer2);
 }
