@@ -63,6 +63,14 @@ public:
     }
 
     /**
+     * 
+     */
+    const char * what() const noexcept override
+    {
+        return mMessage.c_str();
+    }
+
+    /**
      *
      */
     friend std::ostream& operator<<(std::ostream& os, const Exception& e)
