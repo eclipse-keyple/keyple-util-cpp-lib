@@ -1,30 +1,31 @@
-/**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association                                                *
- * https://www.calypsonet-asso.org/                                                               *
- *                                                                                                *
- * See the NOTICE file(s) distributed with this work for additional information regarding         *
- * copyright ownership.                                                                           *
- *                                                                                                *
- * This program and the accompanying materials are made available under the terms of the Eclipse  *
- * Public License 2.0 which is available at http://www.eclipse.org/legal/epl-2.0                  *
- *                                                                                                *
- * SPDX-License-Identifier: EPL-2.0                                                               *
- **************************************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/    *
+ *                                                                            *
+ * See the NOTICE file(s) distributed with this work for additional           *
+ * information regarding copyright ownership.                                 *
+ *                                                                            *
+ * This program and the accompanying materials are made available under the   *
+ * terms of the Eclipse Public License 2.0 which is available at              *
+ * http://www.eclipse.org/legal/epl-2.0                                       *
+ *                                                                            *
+ * SPDX-License-Identifier: EPL-2.0                                           *
+ ******************************************************************************/
+
+#include <vector>
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "ApduUtil.h"
-#include "HexUtil.h"
+#include "keyple/core/util/ApduUtil.hpp"
+#include "keyple/core/util/HexUtil.hpp"
 
-using namespace testing;
-
-using namespace keyple::core::util;
+using keyple::core::util::ApduUtil;
+using keyple::core::util::HexUtil;
 
 const uint8_t CLA = 0x11;
 const uint8_t INS = 0x22;
-const uint8_t P1  = 0x33;
-const uint8_t P2  = 0x44;
+const uint8_t P1 = 0x33;
+const uint8_t P2 = 0x44;
 const std::vector<uint8_t> DATA_IN = {0x12, 0x34, 0x56, 0x78};
 const uint8_t LE = 3;
 
@@ -49,14 +50,16 @@ TEST(ApduUtilTest, build_whenDataInIsNull_shouldReturnCase2)
 
 TEST(ApduUtilTest, build_whenLeIsNull_shouldReturnCase3)
 {
-    std::vector<uint8_t> apduCommand = ApduUtil::build(CLA, INS, P1, P2, DATA_IN);
+    std::vector<uint8_t> apduCommand
+        = ApduUtil::build(CLA, INS, P1, P2, DATA_IN);
 
     ASSERT_EQ(apduCommand, CASE3);
 }
 
 TEST(ApduUtilTest, build_whenDataInAndLeAreNotNull_shouldReturnCase4)
 {
-    std::vector<uint8_t> apduCommand = ApduUtil::build(CLA, INS, P1, P2, DATA_IN, LE);
+    std::vector<uint8_t> apduCommand
+        = ApduUtil::build(CLA, INS, P1, P2, DATA_IN, LE);
 
     ASSERT_EQ(apduCommand, CASE4);
 }
