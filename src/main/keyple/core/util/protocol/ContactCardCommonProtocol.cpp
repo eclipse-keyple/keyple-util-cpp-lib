@@ -1,0 +1,35 @@
+/**************************************************************************************************
+ * Copyright (c) 2024 Calypso Networks Association https://calypsonet.org/                        *
+ *                                                                                                *
+ * This program and the accompanying materials are made available under the                       *
+ * terms of the MIT License which is available at https://opensource.org/licenses/MIT.            *
+ *                                                                                                *
+ * SPDX-License-Identifier: MIT                                                                   *
+ **************************************************************************************************/
+
+#include "keyple/core/util/protocol/ContactCardCommonProtocol.hpp"
+
+namespace keyple {
+namespace core {
+namespace util {
+namespace protocol {
+
+const ContactCardCommonProtocol ContactCardCommonProtocol::ISO_7816_3("ISO_7816_3");
+const ContactCardCommonProtocol ContactCardCommonProtocol::ISO_7816_3_T0("ISO_7816_3_T0");
+const ContactCardCommonProtocol ContactCardCommonProtocol::ISO_7816_3_T1("ISO_7816_3_T1");
+const ContactCardCommonProtocol ContactCardCommonProtocol::INNOVATRON_HIGH_SPEED_PROTOCOL_SAM(
+    "INNOVATRON_HIGH_SPEED_PROTOCOL_SAM");
+
+ContactCardCommonProtocol::ContactCardCommonProtocol(const std::string& name)
+: mName(name) {
+}
+
+const std::string&
+ContactCardCommonProtocol::getName() const {
+    return mName;
+}
+
+}  // namespace protocol
+} /* namespace util */
+} /* namespace core */
+} /* namespace keyple */

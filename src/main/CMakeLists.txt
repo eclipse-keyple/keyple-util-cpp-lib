@@ -19,26 +19,24 @@ ADD_LIBRARY(
 
     ${LIBRARY_TYPE}
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/ApduUtil.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BerTlvUtil.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/ByteArrayUtil.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/HexUtil.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/KeypleAssert.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/Logger.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/LoggerFactory.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/Matcher.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/Pattern.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/protocol/ContactCardCommonProtocol.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/protocol/ContactlessCardCommonProtocol.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/ApduUtil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/BerTlvUtil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/ByteArrayUtil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/HexUtil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/KeypleAssert.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/cpp/Logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/cpp/LoggerFactory.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/cpp/Matcher.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/cpp/Pattern.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/protocol/ContactCardCommonProtocol.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/keyple/core/util/protocol/ContactlessCardCommonProtocol.cpp
 )
 
 TARGET_INCLUDE_DIRECTORIES(
     ${LIBRARY_NAME}
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/protocol
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/exception
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
 )
 
 ADD_LIBRARY(Keyple::Util ALIAS ${LIBRARY_NAME})
