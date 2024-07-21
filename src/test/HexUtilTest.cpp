@@ -1,30 +1,22 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association                                                *
- * https://www.calypsonet-asso.org/                                                               *
+ * Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
- * See the NOTICE file(s) distributed with this work for additional information regarding         *
- * copyright ownership.                                                                           *
+ * This program and the accompanying materials are made available under the                       *
+ * terms of the MIT License which is available at https://opensource.org/licenses/MIT.            *
  *                                                                                                *
- * This program and the accompanying materials are made available under the terms of the Eclipse  *
- * Public License 2.0 which is available at http://www.eclipse.org/legal/epl-2.0                  *
- *                                                                                                *
- * SPDX-License-Identifier: EPL-2.0                                                               *
+ * SPDX-License-Identifier: MIT                                                                   *
  **************************************************************************************************/
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "HexUtil.h"
+#include "keyple/core/util/HexUtil.hpp"
+#include "keyple/core/util/cpp/Arrays.hpp"
+#include "keyple/core/util/cpp/exception/StringIndexOutOfBoundsException.hpp"
 
-/* Keyple Core Util */
-#include "Arrays.h"
-#include "StringIndexOutOfBoundsException.h"
-
-using namespace testing;
-
-using namespace keyple::core::util;
-using namespace keyple::core::util::cpp;
-using namespace keyple::core::util::cpp::exception;
+using keyple::core::util::HexUtil;
+using keyple::core::util::cpp::Arrays;
+using keyple::core::util::cpp::exception::StringIndexOutOfBoundsException;
 
 TEST(HexUtilTest, isValid_whenHexIsValid_shouldReturnTrue)
 {
@@ -58,8 +50,8 @@ TEST(HexUtilTest, toByteArray_whenHexIsOddLength_shouldThrowSIOOBE)
 
 TEST(HexUtilTest, toByteArray_whenHexIsValid_shouldBeSuccessful)
 {
-    ASSERT_TRUE(Arrays::equals(HexUtil::toByteArray("ABCDEFabcdef"),
-                              {0xAB, 0xCD, 0xEF, 0xAB, 0xCD, 0xEF}));
+    ASSERT_TRUE(
+        Arrays::equals(HexUtil::toByteArray("ABCDEFabcdef"), {0xAB, 0xCD, 0xEF, 0xAB, 0xCD, 0xEF}));
 }
 
 TEST(HexUtilTest, toByte_whenHexIsEmpty_shouldReturn0)
