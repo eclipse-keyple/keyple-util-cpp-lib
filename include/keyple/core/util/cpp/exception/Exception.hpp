@@ -32,7 +32,7 @@ public:
     /**
      *
      */
-    explicit Exception(const Exception& o)
+    Exception(const Exception& o)
     : mMessage(o.mMessage)
     , mCause(o.mCause) {
     }
