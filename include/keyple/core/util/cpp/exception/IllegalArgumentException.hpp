@@ -26,14 +26,16 @@ public:
      *
      */
     explicit IllegalArgumentException(const std::string& message)
-    : Exception(message) {
+    : Exception(message)
+    {
     }
 
     /**
      *
      */
     IllegalArgumentException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : Exception(message, cause) {
+    : Exception(message, cause)
+    {
     }
 };
 

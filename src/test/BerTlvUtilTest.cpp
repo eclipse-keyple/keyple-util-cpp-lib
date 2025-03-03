@@ -7,6 +7,9 @@
  * SPDX-License-Identifier: MIT                                                                   *
  **************************************************************************************************/
 
+#include <map>
+#include <vector>
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -27,7 +30,8 @@ static bool
 mapContainsEntry(
     const std::map<const int, const std::vector<uint8_t>>& m,
     const int tag,
-    const std::vector<uint8_t>& value) {
+    const std::vector<uint8_t>& value)
+{
     const auto it = m.find(tag);
     if (it != m.end() && it->second == value) {
         return true;
@@ -38,8 +42,8 @@ mapContainsEntry(
 
 static bool
 mapContainsOnlyKeys(
-    const std::map<const int, std::vector<std::vector<uint8_t>>>& m,
-    const std::vector<int>& values) {
+    const std::map<const int, std::vector<std::vector<uint8_t>>>& m, const std::vector<int>& values)
+{
     return std::all_of(m.begin(), m.end(), [&](const auto& entry) {
         return Arrays::contains(values, entry.first);
     });
@@ -47,7 +51,8 @@ mapContainsOnlyKeys(
 
 static bool
 vectorContainsExactly(
-    std::vector<std::vector<uint8_t>>& v, const std::vector<std::vector<uint8_t>>& values) {
+    std::vector<std::vector<uint8_t>>& v, const std::vector<std::vector<uint8_t>>& values)
+{
     if (v.size() != values.size()) {
         return false;
     }
@@ -62,7 +67,8 @@ vectorContainsExactly(
 }
 
 static bool
-vectorContainsExactly(std::vector<std::vector<uint8_t>>& v, const std::vector<uint8_t>& value) {
+vectorContainsExactly(std::vector<std::vector<uint8_t>>& v, const std::vector<uint8_t>& value)
+{
     if (v.size() != 1) {
         return false;
     }
@@ -70,7 +76,8 @@ vectorContainsExactly(std::vector<std::vector<uint8_t>>& v, const std::vector<ui
     return Arrays::equals(v[0], value);
 }
 
-TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags) {
+TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags)
+{
     auto tlvs = BerTlvUtil::parse(HexUtil::toByteArray(TLV1), false);
 
     ASSERT_TRUE(mapContainsOnlyKeys(tlvs, {0x6F, 0x84, 0xA5, 0xBF0C, 0x53, 0xC7}));
@@ -88,7 +95,8 @@ TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldPro
     ASSERT_TRUE(vectorContainsExactly(tlvs[0xC7], HexUtil::toByteArray("0000000011223344")));
 }
 
-TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags2) {
+TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags2)
+{
     auto tlvs = BerTlvUtil::parse(
         HexUtil::toByteArray("E030C106200107021D01C106202009021D04C106206919091D0"
                              "1C106201008041D03C10620401D021D01C10620501E021D01"),
@@ -109,7 +117,8 @@ TEST(BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldPro
          HexUtil::toByteArray("20501E021D01")}));
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags) {
+TEST(BerTlvUtilTest, parseSimple_whenStructureIsValidAndPrimitiveOnlyIsFalse_shouldProvideAllTags)
+{
     const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), false);
 
     ASSERT_EQ(tlvs.size(), 6);
@@ -128,8 +137,8 @@ TEST(BerTlvUtilTest, parseSimple_whenStructureIsValidAndPrimitiveOnlyIsFalse_sho
 }
 
 TEST(
-    BerTlvUtilTest,
-    parse_whenStructureIsValidAndPrimitiveOnlyIsTrue_shouldProvideOnlyPrimitiveTags) {
+    BerTlvUtilTest, parse_whenStructureIsValidAndPrimitiveOnlyIsTrue_shouldProvideOnlyPrimitiveTags)
+{
     const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), true);
 
     ASSERT_EQ(tlvs.size(), 3);
@@ -138,14 +147,16 @@ TEST(
     ASSERT_TRUE(mapContainsEntry(tlvs, 0xC7, HexUtil::toByteArray("0000000011223344")));
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenTagsOrderChange_shouldProvideTheSameTags) {
+TEST(BerTlvUtilTest, parseSimple_whenTagsOrderChange_shouldProvideTheSameTags)
+{
     const auto tlvs1 = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV1), true);
     const auto tlvs2 = BerTlvUtil::parseSimple(HexUtil::toByteArray(TLV2), true);
 
     ASSERT_EQ(tlvs1, tlvs2);
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenTagsIdIs3Bytes_shouldProvideTheTag) {
+TEST(BerTlvUtilTest, parseSimple_whenTagsIdIs3Bytes_shouldProvideTheTag)
+{
     const auto tlvs = BerTlvUtil::parseSimple(
         HexUtil::toByteArray("6F258409315449432E49434131A518BF0C15DFEF2C080000000"
                              "01122334453070A3C2005141001"),
@@ -157,17 +168,20 @@ TEST(BerTlvUtilTest, parseSimple_whenTagsIdIs3Bytes_shouldProvideTheTag) {
     ASSERT_TRUE(mapContainsEntry(tlvs, 0xDFEF2C, HexUtil::toByteArray("0000000011223344")));
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenStructureIsInvalid_shouldIAE) {
+TEST(BerTlvUtilTest, parseSimple_whenStructureIsInvalid_shouldIAE)
+{
     EXPECT_THROW(
         BerTlvUtil::parseSimple(HexUtil::toByteArray("6F23A5"), true), IllegalArgumentException);
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenLengthFieldIsInvalid_shouldIAE) {
+TEST(BerTlvUtilTest, parseSimple_whenLengthFieldIsInvalid_shouldIAE)
+{
     EXPECT_THROW(
         BerTlvUtil::parseSimple(HexUtil::toByteArray("6F83A5"), true), IllegalArgumentException);
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue) {
+TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue)
+{
     const auto tlvs = BerTlvUtil::parseSimple(HexUtil::toByteArray("8400"), false);
     const auto it = tlvs.find(0x84);
 
@@ -175,7 +189,8 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue) {
     ASSERT_EQ(static_cast<int>(it->second.size()), 0);
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenLengthIsTwoBytes_shouldValue) {
+TEST(BerTlvUtilTest, parseSimple_whenLengthIsTwoBytes_shouldValue)
+{
     /* Length 250 */
     std::vector<uint8_t> tlv(253);
 
@@ -194,7 +209,8 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsTwoBytes_shouldValue) {
     ASSERT_TRUE(Arrays::containsOnly(it->second, static_cast<uint8_t>(0xA5)));
 }
 
-TEST(BerTlvUtilTest, parseSimple_whenLengthIsThreeBytes_shouldValue) {
+TEST(BerTlvUtilTest, parseSimple_whenLengthIsThreeBytes_shouldValue)
+{
     /* Length 260 */
     std::vector<uint8_t> tlv(264);
 
@@ -213,34 +229,42 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsThreeBytes_shouldValue) {
     ASSERT_TRUE(Arrays::containsOnly(it->second, static_cast<uint8_t>(0xA5)));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when1ByteTagIsConstructed_shouldReturnTrue) {
+TEST(BerTlvUtilTest, isConstructed_when1ByteTagIsConstructed_shouldReturnTrue)
+{
     ASSERT_TRUE(BerTlvUtil::isConstructed(0x6F));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when1ByteTagIsPrimitive_shouldReturnFalse) {
+TEST(BerTlvUtilTest, isConstructed_when1ByteTagIsPrimitive_shouldReturnFalse)
+{
     ASSERT_FALSE(BerTlvUtil::isConstructed(0x84));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when2ByteTagIsConstructed_shouldReturnTrue) {
+TEST(BerTlvUtilTest, isConstructed_when2ByteTagIsConstructed_shouldReturnTrue)
+{
     ASSERT_TRUE(BerTlvUtil::isConstructed(0xBC0C));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when2ByteTagIsPrimitive_shouldReturnFalse) {
+TEST(BerTlvUtilTest, isConstructed_when2ByteTagIsPrimitive_shouldReturnFalse)
+{
     ASSERT_FALSE(BerTlvUtil::isConstructed(0x9F0C));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when3ByteTagIsConstructed_shouldReturnTrue) {
+TEST(BerTlvUtilTest, isConstructed_when3ByteTagIsConstructed_shouldReturnTrue)
+{
     ASSERT_TRUE(BerTlvUtil::isConstructed(0x6FEF2C));
 }
 
-TEST(BerTlvUtilTest, isConstructed_when3ByteTagIsPrimitive_shouldReturnFalse) {
+TEST(BerTlvUtilTest, isConstructed_when3ByteTagIsPrimitive_shouldReturnFalse)
+{
     ASSERT_FALSE(BerTlvUtil::isConstructed(0xDFEF2C));
 }
 
-TEST(BerTlvUtilTest, isConstructed_whenTagIsNegative_shouldIAE) {
+TEST(BerTlvUtilTest, isConstructed_whenTagIsNegative_shouldIAE)
+{
     EXPECT_THROW(BerTlvUtil::isConstructed(-1), IllegalArgumentException);
 }
 
-TEST(BerTlvUtilTest, isConstructed_whenTagIsTooLarge_shouldIAE) {
+TEST(BerTlvUtilTest, isConstructed_whenTagIsTooLarge_shouldIAE)
+{
     EXPECT_THROW(BerTlvUtil::isConstructed(0x1000000), IllegalArgumentException);
 }

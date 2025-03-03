@@ -10,6 +10,8 @@
 #include "keyple/core/util/HexUtil.hpp"
 
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "keyple/core/util/cpp/exception/StringIndexOutOfBoundsException.hpp"
 
@@ -56,11 +58,13 @@ const std::vector<uint8_t> HexUtil::mHexToNibble = {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
-HexUtil::HexUtil() {
+HexUtil::HexUtil()
+{
 }
 
 bool
-HexUtil::isValid(const std::string& hex) {
+HexUtil::isValid(const std::string& hex)
+{
     if (hex.length() == 0 || hex.length() % 2 != 0) {
         return false;
     }
@@ -75,7 +79,8 @@ HexUtil::isValid(const std::string& hex) {
 }
 
 const std::vector<uint8_t>
-HexUtil::toByteArray(const std::string& hex) {
+HexUtil::toByteArray(const std::string& hex)
+{
     std::vector<uint8_t> tab(hex.size() / 2);
 
     if (hex.length() % 2) {
@@ -90,7 +95,8 @@ HexUtil::toByteArray(const std::string& hex) {
 }
 
 uint8_t
-HexUtil::toByte(const std::string& hex) {
+HexUtil::toByte(const std::string& hex)
+{
     uint8_t val = 0;
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
@@ -102,7 +108,8 @@ HexUtil::toByte(const std::string& hex) {
 }
 
 uint16_t
-HexUtil::toShort(const std::string& hex) {
+HexUtil::toShort(const std::string& hex)
+{
     uint16_t val = 0;
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
@@ -114,7 +121,8 @@ HexUtil::toShort(const std::string& hex) {
 }
 
 uint32_t
-HexUtil::toInt(const std::string& hex) {
+HexUtil::toInt(const std::string& hex)
+{
     uint32_t val = 0;
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
@@ -126,7 +134,8 @@ HexUtil::toInt(const std::string& hex) {
 }
 
 uint64_t
-HexUtil::toLong(const std::string& hex) {
+HexUtil::toLong(const std::string& hex)
+{
     uint64_t val = 0;
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
@@ -138,7 +147,8 @@ HexUtil::toLong(const std::string& hex) {
 }
 
 const std::string
-HexUtil::toHex(const std::vector<uint8_t>& tab) {
+HexUtil::toHex(const std::vector<uint8_t>& tab)
+{
     std::stringstream ss;
 
     for (const auto& b : tab) {
@@ -149,12 +159,14 @@ HexUtil::toHex(const std::vector<uint8_t>& tab) {
 }
 
 const std::string
-HexUtil::toHex(const uint8_t val) {
+HexUtil::toHex(const uint8_t val)
+{
     return mByteToHex[val & 0xFF];
 }
 
 const std::string
-HexUtil::toHex(const uint16_t val) {
+HexUtil::toHex(const uint16_t val)
+{
     if ((val & 0xFF00) == 0) {
         return mByteToHex[val & 0xFF];
     }
@@ -163,7 +175,8 @@ HexUtil::toHex(const uint16_t val) {
 }
 
 const std::string
-HexUtil::toHex(const uint32_t val) {
+HexUtil::toHex(const uint32_t val)
+{
     if ((val & 0xFFFFFF00) == 0) {
         return mByteToHex[val & 0xFF];
     } else if ((val & 0xFFFF0000) == 0) {
@@ -177,7 +190,8 @@ HexUtil::toHex(const uint32_t val) {
 }
 
 const std::string
-HexUtil::toHex(const uint64_t val) {
+HexUtil::toHex(const uint64_t val)
+{
     if ((val & 0xFFFFFFFFFFFFFF00L) == 0) {
         return mByteToHex[static_cast<int>((val & 0xFF))];
     } else if ((val & 0xFFFFFFFFFFFF0000L) == 0) {

@@ -26,14 +26,16 @@ public:
      *
      */
     explicit IndexOutOfBoundsException(const std::string& message)
-    : RuntimeException(message) {
+    : RuntimeException(message)
+    {
     }
 
     /**
      *
      */
     IndexOutOfBoundsException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : RuntimeException(message, cause) {
+    : RuntimeException(message, cause)
+    {
     }
 };
 

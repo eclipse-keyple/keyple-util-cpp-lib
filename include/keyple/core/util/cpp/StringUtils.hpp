@@ -24,7 +24,8 @@ namespace cpp {
 class StringUtils {
 public:
     static inline const std::string
-    format(const char* format, ...) {
+    format(const char* format, ...)
+    {
         char buf[1024];
         va_list args;
 
@@ -36,19 +37,22 @@ public:
     }
 
     static inline bool
-    contains(const std::string& s1, const std::string& s2) {
+    contains(const std::string& s1, const std::string& s2)
+    {
         return s1.find(s2) != std::string::npos;
     }
 
     static inline bool
-    matches(const std::string& s, const std::string& regex) {
+    matches(const std::string& s, const std::string& regex)
+    {
         std::regex r(regex);
 
         return std::regex_match(s, r);
     }
 
     static inline const std::vector<std::string>
-    split(const std::string& string, const std::string& delimiter) {
+    split(const std::string& string, const std::string& delimiter)
+    {
         std::vector<std::string> tokens;
         std::string s = string;
 
@@ -63,7 +67,8 @@ public:
     }
 
     static inline const std::string
-    tolower(const std::string& string) {
+    tolower(const std::string& string)
+    {
         std::string copy = string;
         std::transform(copy.begin(), copy.end(), copy.begin(), [](unsigned char c) {
             return static_cast<char>(std::tolower(c));

@@ -26,14 +26,16 @@ public:
      *
      */
     explicit IllegalStateException(const std::string& message)
-    : Exception(message) {
+    : Exception(message)
+    {
     }
 
     /**
      *
      */
     IllegalStateException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : Exception(message, cause) {
+    : Exception(message, cause)
+    {
     }
 };
 

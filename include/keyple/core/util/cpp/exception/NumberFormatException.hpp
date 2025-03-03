@@ -26,21 +26,24 @@ public:
      *
      */
     NumberFormatException()
-    : Exception() {
+    : Exception()
+    {
     }
 
     /**
      *
      */
     explicit NumberFormatException(const std::string& message)
-    : Exception(message) {
+    : Exception(message)
+    {
     }
 
     /**
      *
      */
     NumberFormatException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : Exception(message, cause) {
+    : Exception(message, cause)
+    {
     }
 };
 

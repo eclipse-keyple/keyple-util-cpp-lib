@@ -7,9 +7,11 @@
  * SPDX-License-Identifier: MIT                                                                   *
  **************************************************************************************************/
 
-#include <cstdarg>
-
 #include "keyple/core/util/cpp/Logger.hpp"
+
+#include <cstdarg>
+#include <cstdio>
+#include <string>
 
 namespace keyple {
 namespace core {
@@ -20,21 +22,25 @@ Logger::Level Logger::mLevel = Logger::Level::logDebug;
 
 Logger::Logger(const std::string& className, std::mutex* mtx)
 : className(demangle(className.c_str()))
-, mtx(mtx) {
+, mtx(mtx)
+{
 }
 
 std::string
-Logger::getClassName() {
+Logger::getClassName()
+{
     return className;
 }
 
 void
-Logger::setLoggerLevel(Logger::Level level) {
+Logger::setLoggerLevel(Logger::Level level)
+{
     mLevel = level;
 }
 
 const std::string
-Logger::getCurrentTimestamp() {
+Logger::getCurrentTimestamp()
+{
     using std::chrono::system_clock;
     auto currentTime = std::chrono::system_clock::now();
     char buffer1[21];

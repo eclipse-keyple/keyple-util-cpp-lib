@@ -9,6 +9,9 @@
 
 #include "keyple/core/util/BerTlvUtil.hpp"
 
+#include <map>
+#include <vector>
+
 #include "keyple/core/util/cpp/Arrays.hpp"
 #include "keyple/core/util/cpp/exception/IllegalArgumentException.hpp"
 #include "keyple/core/util/cpp/exception/IndexOutOfBoundsException.hpp"
@@ -21,11 +24,13 @@ using keyple::core::util::cpp::Arrays;
 using keyple::core::util::cpp::exception::IllegalArgumentException;
 using keyple::core::util::cpp::exception::IndexOutOfBoundsException;
 
-BerTlvUtil::BerTlvUtil() {
+BerTlvUtil::BerTlvUtil()
+{
 }
 
 const std::map<const int, const std::vector<uint8_t>>
-BerTlvUtil::parseSimple(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly) {
+BerTlvUtil::parseSimple(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
     try {
         return parseBufferSimple(tlvStructure, primitiveOnly);
     } catch (const IndexOutOfBoundsException& e) {
@@ -35,7 +40,8 @@ BerTlvUtil::parseSimple(const std::vector<uint8_t>& tlvStructure, const bool pri
 }
 
 const std::map<const int, std::vector<std::vector<uint8_t>>>
-BerTlvUtil::parse(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly) {
+BerTlvUtil::parse(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
     try {
         return parseBuffer(tlvStructure, primitiveOnly);
     } catch (const IndexOutOfBoundsException& e) {
@@ -45,7 +51,8 @@ BerTlvUtil::parse(const std::vector<uint8_t>& tlvStructure, const bool primitive
 }
 
 bool
-BerTlvUtil::isConstructed(const int tagId) {
+BerTlvUtil::isConstructed(const int tagId)
+{
     if (tagId < 0 || tagId > 0xFFFFFF) {
         throw IllegalArgumentException("Tag Id out of range.");
     }
@@ -62,7 +69,8 @@ BerTlvUtil::isConstructed(const int tagId) {
 }
 
 const std::map<const int, const std::vector<uint8_t>>
-BerTlvUtil::parseBufferSimple(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly) {
+BerTlvUtil::parseBufferSimple(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
     std::map<const int, const std::vector<uint8_t>> tlvs;
     int offset = 0;
 
@@ -97,7 +105,8 @@ BerTlvUtil::parseBufferSimple(const std::vector<uint8_t>& tlvStructure, const bo
 }
 
 const std::map<const int, std::vector<std::vector<uint8_t>>>
-BerTlvUtil::parseBuffer(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly) {
+BerTlvUtil::parseBuffer(const std::vector<uint8_t>& tlvStructure, const bool primitiveOnly)
+{
     std::map<const int, std::vector<std::vector<uint8_t>>> tlvs;
     int offset = 0;
 
@@ -139,7 +148,8 @@ BerTlvUtil::parseBuffer(const std::vector<uint8_t>& tlvStructure, const bool pri
 
 std::vector<std::vector<uint8_t>>&
 BerTlvUtil::getOrInitTagValues(
-    std::map<const int, std::vector<std::vector<uint8_t>>>& tlvs, const int tag) {
+    std::map<const int, std::vector<std::vector<uint8_t>>>& tlvs, const int tag)
+{
     const auto it = tlvs.find(tag);
 
     if (it == tlvs.end()) {
@@ -152,7 +162,8 @@ BerTlvUtil::getOrInitTagValues(
 }
 
 int
-BerTlvUtil::getTagSize(const std::vector<uint8_t>& tlvStructure, const int offset) {
+BerTlvUtil::getTagSize(const std::vector<uint8_t>& tlvStructure, const int offset)
+{
     /* C++: prevent accessing unexisting values */
     if (offset >= static_cast<int>(tlvStructure.size())) {
         throw IndexOutOfBoundsException("Invalid index");
@@ -174,7 +185,8 @@ BerTlvUtil::getTagSize(const std::vector<uint8_t>& tlvStructure, const int offse
 }
 
 int
-BerTlvUtil::getTag(const std::vector<uint8_t>& tlvStructure, const int offset, const int size) {
+BerTlvUtil::getTag(const std::vector<uint8_t>& tlvStructure, const int offset, const int size)
+{
     switch (size) {
     case 1:
         return tlvStructure[offset] & 0xFF;
@@ -189,7 +201,8 @@ BerTlvUtil::getTag(const std::vector<uint8_t>& tlvStructure, const int offset, c
 }
 
 int
-BerTlvUtil::getLengthSize(const std::vector<uint8_t>& tlvStructure, const int offset) {
+BerTlvUtil::getLengthSize(const std::vector<uint8_t>& tlvStructure, const int offset)
+{
     int firstByteLength = tlvStructure[offset] & 0xff;
 
     switch (firstByteLength) {
@@ -207,7 +220,8 @@ BerTlvUtil::getLengthSize(const std::vector<uint8_t>& tlvStructure, const int of
 }
 
 int
-BerTlvUtil::getLength(const std::vector<uint8_t>& tlvStructure, const int offset, const int size) {
+BerTlvUtil::getLength(const std::vector<uint8_t>& tlvStructure, const int offset, const int size)
+{
     switch (size) {
     case 1:
         return tlvStructure[offset] & 0x7F;

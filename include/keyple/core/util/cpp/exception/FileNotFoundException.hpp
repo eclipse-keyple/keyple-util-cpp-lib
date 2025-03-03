@@ -25,14 +25,16 @@ public:
      *
      */
     explicit FileNotFoundException(const std::string& message)
-    : IOException(message) {
+    : IOException(message)
+    {
     }
 
     /**
      *
      */
     FileNotFoundException(const std::string& message, const std::exception cause)
-    : IOException(message, cause) {
+    : IOException(message, cause)
+    {
     }
 };
 

@@ -9,6 +9,8 @@
 
 #include "keyple/core/util/ApduUtil.hpp"
 
+#include <vector>
+
 #include "keyple/core/util/cpp/System.hpp"
 
 namespace keyple {
@@ -17,7 +19,8 @@ namespace util {
 
 using keyple::core::util::cpp::System;
 
-ApduUtil::ApduUtil() {
+ApduUtil::ApduUtil()
+{
 }
 
 const std::vector<uint8_t>
@@ -27,7 +30,8 @@ ApduUtil::build(
     const uint8_t p1,
     const uint8_t p2,
     const std::vector<uint8_t>& dataIn,
-    const uint8_t le) {
+    const uint8_t le)
+{
     std::vector<uint8_t> apduCommand;
 
     /* Buffer allocation */
@@ -59,7 +63,8 @@ ApduUtil::build(
     const uint8_t ins,
     const uint8_t p1,
     const uint8_t p2,
-    const std::vector<uint8_t>& dataIn) {
+    const std::vector<uint8_t>& dataIn)
+{
     std::vector<uint8_t> apduCommand;
 
     /* Buffer allocation */
@@ -86,7 +91,8 @@ ApduUtil::build(
 
 const std::vector<uint8_t>
 ApduUtil::build(
-    const uint8_t cla, const uint8_t ins, const uint8_t p1, const uint8_t p2, const uint8_t le) {
+    const uint8_t cla, const uint8_t ins, const uint8_t p1, const uint8_t p2, const uint8_t le)
+{
     std::vector<uint8_t> apduCommand;
 
     /* Buffer allocation */
@@ -106,7 +112,8 @@ ApduUtil::build(
 }
 
 const std::vector<uint8_t>
-ApduUtil::build(const uint8_t cla, const uint8_t ins, const uint8_t p1, const uint8_t p2) {
+ApduUtil::build(const uint8_t cla, const uint8_t ins, const uint8_t p1, const uint8_t p2)
+{
     std::vector<uint8_t> apduCommand;
 
     /* Buffer allocation */
@@ -126,7 +133,8 @@ ApduUtil::build(const uint8_t cla, const uint8_t ins, const uint8_t p1, const ui
 }
 
 std::vector<uint8_t>
-ApduUtil::allocateBuffer(const std::vector<uint8_t>& data, const uint8_t le) {
+ApduUtil::allocateBuffer(const std::vector<uint8_t>& data, const uint8_t le)
+{
     (void)le;
 
     int length = 4;  // Header
@@ -138,7 +146,8 @@ ApduUtil::allocateBuffer(const std::vector<uint8_t>& data, const uint8_t le) {
 }
 
 std::vector<uint8_t>
-ApduUtil::allocateBuffer(const std::vector<uint8_t>& data) {
+ApduUtil::allocateBuffer(const std::vector<uint8_t>& data)
+{
     int length = 4;  // Header
 
     length += static_cast<int>(data.size() + 1);  // Lc + data
@@ -147,7 +156,8 @@ ApduUtil::allocateBuffer(const std::vector<uint8_t>& data) {
 }
 
 std::vector<uint8_t>
-ApduUtil::allocateBuffer(const uint8_t le) {
+ApduUtil::allocateBuffer(const uint8_t le)
+{
     (void)le;
 
     int length = 4;  // Header
@@ -158,7 +168,8 @@ ApduUtil::allocateBuffer(const uint8_t le) {
 }
 
 std::vector<uint8_t>
-ApduUtil::allocateBuffer() {
+ApduUtil::allocateBuffer()
+{
     int length = 4;  // Header
 
     /* Case 1: 5-byte apdu, le=0 */
@@ -168,7 +179,8 @@ ApduUtil::allocateBuffer() {
 }
 
 bool
-ApduUtil::isCase4(const std::vector<uint8_t>& apduCommand) {
+ApduUtil::isCase4(const std::vector<uint8_t>& apduCommand)
+{
     if (apduCommand.size() > 4) {
         return apduCommand[4] == apduCommand.size() - 6;
     }

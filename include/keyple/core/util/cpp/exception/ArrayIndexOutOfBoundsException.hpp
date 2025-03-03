@@ -27,7 +27,8 @@ public:
      *
      */
     explicit ArrayIndexOutOfBoundsException(const std::string& message)
-    : IndexOutOfBoundsException(message) {
+    : IndexOutOfBoundsException(message)
+    {
     }
 
     /**
@@ -35,7 +36,8 @@ public:
      */
     ArrayIndexOutOfBoundsException(
         const std::string& message, const std::shared_ptr<Exception> cause)
-    : IndexOutOfBoundsException(message, cause) {
+    : IndexOutOfBoundsException(message, cause)
+    {
     }
 };
 

@@ -25,14 +25,16 @@ public:
      *
      */
     AssertionError()
-    : Error() {
+    : Error()
+    {
     }
 
     /**
      *
      */
     explicit AssertionError(const std::string& msg)
-    : Error(msg) {
+    : Error(msg)
+    {
     }
 };
 

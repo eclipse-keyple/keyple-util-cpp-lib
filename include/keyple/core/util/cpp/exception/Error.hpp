@@ -24,14 +24,16 @@ public:
      *
      */
     Error()
-    : mMessage("") {
+    : mMessage("")
+    {
     }
 
     /**
      *
      */
     explicit Error(const std::string& msg)
-    : mMessage(msg) {
+    : mMessage(msg)
+    {
     }
 
 private:

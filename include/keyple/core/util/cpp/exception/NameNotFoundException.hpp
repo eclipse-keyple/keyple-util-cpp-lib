@@ -25,14 +25,16 @@ public:
      *
      */
     explicit NameNotFoundException(const std::string& message)
-    : Exception(message) {
+    : Exception(message)
+    {
     }
 
     /**
      *
      */
     NameNotFoundException(const std::string& message, const std::exception cause)
-    : Exception(message, cause) {
+    : Exception(message, cause)
+    {
     }
 };
 

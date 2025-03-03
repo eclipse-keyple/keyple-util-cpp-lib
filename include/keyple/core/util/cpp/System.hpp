@@ -32,7 +32,8 @@ public:
      *
      */
     static uint64_t
-    nanoTime() {
+    nanoTime()
+    {
 #if defined(WIN32)
         SYSTEMTIME time;
         GetSystemTime(&time);
@@ -57,7 +58,8 @@ public:
         size_t srcPos,
         std::vector<char>& dest,
         size_t destPos,
-        size_t length) {
+        size_t length)
+    {
         for (size_t i = 0; i < length; i++) {
             dest[destPos + i] = src[srcPos + i];
         }
@@ -72,7 +74,8 @@ public:
         size_t srcPos,
         std::vector<char>& dest,
         size_t destPos,
-        size_t length) {
+        size_t length)
+    {
         if ((srcPos + length) >= src.size()) {
             throw ArrayIndexOutOfBoundsException("pos + offset > src size");
         }
@@ -92,7 +95,8 @@ public:
         size_t srcPos,
         std::vector<uint8_t>& dest,
         size_t destPos,
-        size_t length) {
+        size_t length)
+    {
         if ((srcPos + length) > src.size()) {
             throw ArrayIndexOutOfBoundsException("pos + offset > src size");
         }
@@ -110,7 +114,8 @@ public:
      *
      */
     static uint64_t
-    currentTimeMillis() {
+    currentTimeMillis()
+    {
         return static_cast<uint64_t>(nanoTime() / pow(10, 6));
     }
 
@@ -119,7 +124,8 @@ public:
      */
     template <typename T>
     static uint32_t
-    identityHashCode(const std::shared_ptr<T> t) {
+    identityHashCode(const std::shared_ptr<T> t)
+    {
         if (t == nullptr) {
             return 0;
         }

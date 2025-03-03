@@ -29,7 +29,8 @@ using keyple::core::util::cpp::exception::IndexOutOfBoundsException;
 class Arrays {
 public:
     static bool
-    equals(const std::vector<char>& a1, const std::vector<char>& a2) {
+    equals(const std::vector<char>& a1, const std::vector<char>& a2)
+    {
         if (a1.size() != a2.size()) {
             return false;
         }
@@ -43,7 +44,8 @@ public:
     }
 
     static bool
-    equals(const std::vector<uint8_t>& a1, const std::vector<uint8_t>& a2) {
+    equals(const std::vector<uint8_t>& a1, const std::vector<uint8_t>& a2)
+    {
         if (a1.size() != a2.size()) {
             return false;
         }
@@ -57,7 +59,8 @@ public:
     }
 
     static int
-    hashCode(const std::vector<char>& a) {
+    hashCode(const std::vector<char>& a)
+    {
         int hash = 0;
 
         std::for_each(a.begin(), a.end(), [&](const char i) { hash ^= i; });
@@ -66,7 +69,8 @@ public:
     }
 
     static int
-    hashCode(const std::vector<uint8_t>& a) {
+    hashCode(const std::vector<uint8_t>& a)
+    {
         int hash = 0;
 
         std::for_each(a.begin(), a.end(), [&](const uint8_t i) { hash ^= i; });
@@ -79,7 +83,8 @@ public:
      * so the copy has the specified length.
      */
     static std::vector<uint8_t>
-    copyOf(const std::vector<uint8_t>& original, const size_t size) {
+    copyOf(const std::vector<uint8_t>& original, const size_t size)
+    {
         std::vector<uint8_t> vec;
         std::copy(original.begin(), original.begin() + size, std::back_inserter(vec));
 
@@ -87,7 +92,8 @@ public:
     }
 
     static std::vector<char>
-    copyOfRange(const std::vector<char>& original, const size_t from, const size_t to) {
+    copyOfRange(const std::vector<char>& original, const size_t from, const size_t to)
+    {
         if ((to - from) > original.size()) {
             throw IndexOutOfBoundsException("index out of bound");
         }
@@ -99,7 +105,8 @@ public:
     }
 
     static std::vector<uint8_t>
-    copyOfRange(const std::vector<uint8_t>& original, const size_t from, const size_t to) {
+    copyOfRange(const std::vector<uint8_t>& original, const size_t from, const size_t to)
+    {
         if (from > original.size()) {
             throw IndexOutOfBoundsException("from > original.size()");
         }
@@ -112,7 +119,6 @@ public:
 
         if (to <= original.size()) {
             std::copy(original.begin() + from, original.begin() + to, std::back_inserter(vec));
-
         } else {
             std::copy(
                 original.begin() + from,
@@ -126,13 +132,15 @@ public:
 
     template <typename T>
     static bool
-    contains(const std::vector<T>& a, const T b) {
+    contains(const std::vector<T>& a, const T b)
+    {
         return std::any_of(a.begin(), a.end(), [&](T i) { return i == b; });
     }
 
     template <typename T>
     static bool
-    containsAll(std::vector<T> a, std::vector<T> b) {
+    containsAll(std::vector<T> a, std::vector<T> b)
+    {
         std::sort(a.begin(), a.end());
         std::sort(b.begin(), b.end());
 
@@ -141,13 +149,15 @@ public:
 
     template <typename T>
     static bool
-    containsOnly(const std::vector<T>& a, const T b) {
+    containsOnly(const std::vector<T>& a, const T b)
+    {
         return std::all_of(a.begin(), a.end(), [&](T i) { return i == b; });
     }
 
     template <typename T>
     static bool
-    startsWith(const std::vector<T>& a, const std::vector<T>& b) {
+    startsWith(const std::vector<T>& a, const std::vector<T>& b)
+    {
         if (b.size() > a.size()) {
             return false;
         }
@@ -163,7 +173,8 @@ public:
 
     template <typename T>
     static bool
-    endsWith(const std::vector<T>& a, const std::vector<T>& b) {
+    endsWith(const std::vector<T>& a, const std::vector<T>& b)
+    {
         if (b.size() > a.size()) {
             return false;
         }
@@ -181,7 +192,8 @@ public:
 
     template <typename T>
     static int
-    indexOf(const std::vector<T>& a, const T b) {
+    indexOf(const std::vector<T>& a, const T b)
+    {
         auto it = std::find(a.begin(), a.end(), b);
         if (it != a.end()) {
             return static_cast<int>(it - a.begin());
@@ -192,7 +204,8 @@ public:
 
     template <typename T>
     static bool
-    addAll(std::vector<T>& a, const std::vector<T>& b) {
+    addAll(std::vector<T>& a, const std::vector<T>& b)
+    {
         if (b.size() == 0) {
             return false;
         }
@@ -204,7 +217,8 @@ public:
 
     template <typename T>
     static bool
-    addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<T>>& b) {
+    addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<T>>& b)
+    {
         if (b.size() == 0) {
             return false;
         }
@@ -216,7 +230,8 @@ public:
 
     template <typename T, typename U>
     static bool
-    addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<U>>& b) {
+    addAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<U>>& b)
+    {
         if (b.size() == 0) {
             return false;
         }
@@ -228,7 +243,8 @@ public:
 
     template <typename T>
     static void
-    remove(std::vector<std::shared_ptr<T>>& a, const std::shared_ptr<T>& b) {
+    remove(std::vector<std::shared_ptr<T>>& a, const std::shared_ptr<T>& b)
+    {
         const auto it = std::find(a.begin(), a.end(), b);
         if (it != a.end()) {
             /* Value is present */
@@ -238,7 +254,8 @@ public:
 
     template <typename T, typename U>
     static bool
-    removeAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<U>>& b) {
+    removeAll(std::vector<std::shared_ptr<T>>& a, const std::vector<std::shared_ptr<U>>& b)
+    {
         bool ret = false;
 
         if (b.size() == 0) {
@@ -260,7 +277,8 @@ public:
 
     template <typename T>
     static void
-    fill(std::vector<T>& a, const size_t from_Index, const size_t to_Index, T val) {
+    fill(std::vector<T>& a, const size_t from_Index, const size_t to_Index, T val)
+    {
         for (size_t i = from_Index; i < to_Index; i++) {
             a[i] = val;
         }

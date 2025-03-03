@@ -17,7 +17,8 @@ namespace cpp {
 class Character {
 public:
     static char
-    digit(char ch, int radix) {
+    digit(char ch, int radix)
+    {
         (void)radix;
 
         if (ch >= '0' && ch <= '9')
@@ -34,7 +35,8 @@ public:
      * See isWhitespace().
      */
     static bool
-    isWhitespace(char c) {
+    isWhitespace(char c)
+    {
         return isWhitespace(static_cast<int>(c));
     }
 
@@ -46,7 +48,8 @@ public:
      * an alternative.
      */
     static bool
-    isWhitespace(int codePoint) {
+    isWhitespace(int codePoint)
+    {
         if ((codePoint >= 0x1c && codePoint <= 0x20) || (codePoint >= 0x09 && codePoint <= 0x0d)) {
             return true;
         }

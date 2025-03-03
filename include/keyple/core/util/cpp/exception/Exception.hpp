@@ -26,7 +26,8 @@ public:
     /**
      *
      */
-    Exception() {
+    Exception()
+    {
     }
 
     /**
@@ -34,7 +35,8 @@ public:
      */
     Exception(const Exception& o)
     : mMessage(o.mMessage)
-    , mCause(o.mCause) {
+    , mCause(o.mCause)
+    {
     }
 
     /**
@@ -42,7 +44,8 @@ public:
      */
     explicit Exception(const std::string& message)
     : mMessage(message)
-    , mCause(nullptr) {
+    , mCause(nullptr)
+    {
     }
 
     /**
@@ -50,14 +53,16 @@ public:
      */
     Exception(const std::string& message, const std::shared_ptr<Exception> cause)
     : mMessage(message)
-    , mCause(cause) {
+    , mCause(cause)
+    {
     }
 
     /**
      * Returns the detail message string of this exception.
      */
     const std::string&
-    getMessage() const {
+    getMessage() const
+    {
         return mMessage;
     }
 
@@ -65,7 +70,8 @@ public:
      * Returns the cause of the exception.
      */
     const std::shared_ptr<Exception>
-    getCause() const {
+    getCause() const
+    {
         return mCause;
     }
 
@@ -73,7 +79,8 @@ public:
      *
      */
     const char*
-    what() const noexcept override {
+    what() const noexcept override
+    {
         return mMessage.c_str();
     }
 
@@ -81,7 +88,8 @@ public:
      *
      */
     friend std::ostream&
-    operator<<(std::ostream& os, const Exception& e) {
+    operator<<(std::ostream& os, const Exception& e)
+    {
         os << "EXCEPTION: {" << "MESSAGE = " << e.mMessage;
 
         if (e.mCause != nullptr) {
@@ -97,7 +105,8 @@ public:
      *
      */
     bool
-    operator==(const Exception& o) const {
+    operator==(const Exception& o) const
+    {
         return mMessage == o.mMessage && mCause == o.mCause;
     }
 

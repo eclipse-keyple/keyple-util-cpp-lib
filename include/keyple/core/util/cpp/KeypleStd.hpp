@@ -27,13 +27,15 @@ namespace std {
 #if !defined(_WIN32) && !(defined(__APPLE__) && defined(__clang__)) && __cplusplus < 201703L
 template <typename To, typename From>
 inline std::shared_ptr<To>
-reinterpret_pointer_cast(std::shared_ptr<From> const& ptr) noexcept {
+reinterpret_pointer_cast(std::shared_ptr<From> const& ptr) noexcept
+{
     return std::shared_ptr<To>(ptr, reinterpret_cast<To*>(ptr.get()));
 }
 #endif
 
 inline std::ostream&
-operator<<(std::ostream& os, const uint8_t v) {
+operator<<(std::ostream& os, const uint8_t v)
+{
     os << static_cast<int>(v) << "(0x" << std::uppercase << std::hex << std::setfill('0')
        << std::setw(2) << static_cast<int>(v) << ")";
 
@@ -41,7 +43,8 @@ operator<<(std::ostream& os, const uint8_t v) {
 }
 
 inline std::ostream&
-operator<<(std::ostream& os, const std::vector<std::string>& v) {
+operator<<(std::ostream& os, const std::vector<std::string>& v)
+{
     os << "{";
     for (auto it = v.begin(); it != v.end(); ++it) {
         if (it != v.begin())
@@ -54,7 +57,8 @@ operator<<(std::ostream& os, const std::vector<std::string>& v) {
 }
 
 inline std::ostream&
-operator<<(std::ostream& os, const std::set<std::string>& s) {
+operator<<(std::ostream& os, const std::set<std::string>& s)
+{
     os << "{";
     for (auto it = s.begin(); it != s.end(); ++it) {
         if (it != s.begin())
@@ -68,7 +72,8 @@ operator<<(std::ostream& os, const std::set<std::string>& s) {
 
 template <class A, class B>
 inline std::ostream&
-operator<<(std::ostream& os, const std::map<A, B>& s) {
+operator<<(std::ostream& os, const std::map<A, B>& s)
+{
     os << "MAP: {";
     for (auto it = s.begin(); it != s.end(); ++it) {
         if (it != s.begin())
@@ -82,7 +87,8 @@ operator<<(std::ostream& os, const std::map<A, B>& s) {
 
 template <class A, class B>
 inline std::ostream&
-operator<<(std::ostream& os, const std::map<const A, B>& s) {
+operator<<(std::ostream& os, const std::map<const A, B>& s)
+{
     os << "MAP: {";
     for (auto it = s.begin(); it != s.end(); ++it) {
         if (it != s.begin())
@@ -96,7 +102,8 @@ operator<<(std::ostream& os, const std::map<const A, B>& s) {
 
 template <typename out>
 inline void
-split(const std::string& s, const std::regex& re, out result) {
+split(const std::string& s, const std::regex& re, out result)
+{
     std::sregex_token_iterator d(s.begin(), s.end(), re, -1);
     std::sregex_token_iterator end;
 
@@ -107,7 +114,8 @@ split(const std::string& s, const std::regex& re, out result) {
 
 /* Trim from left */
 inline std::string&
-ltrim(std::string& s, const char* t = " \t\n\r\f\v") {
+ltrim(std::string& s, const char* t = " \t\n\r\f\v")
+{
     s.erase(0, s.find_first_not_of(t));
 
     return s;
@@ -115,7 +123,8 @@ ltrim(std::string& s, const char* t = " \t\n\r\f\v") {
 
 /* Trim from right */
 inline std::string&
-rtrim(std::string& s, const char* t = " \t\n\r\f\v") {
+rtrim(std::string& s, const char* t = " \t\n\r\f\v")
+{
     s.erase(s.find_last_not_of(t) + 1);
 
     return s;
@@ -123,7 +132,8 @@ rtrim(std::string& s, const char* t = " \t\n\r\f\v") {
 
 /* Trim from left & right */
 inline std::string&
-trim(std::string& s, const char* t = " \t\n\r\f\v") {
+trim(std::string& s, const char* t = " \t\n\r\f\v")
+{
     return ltrim(rtrim(s, t), t);
 }
 

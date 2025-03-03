@@ -9,6 +9,8 @@
 
 #include "keyple/core/util/protocol/ContactlessCardCommonProtocol.hpp"
 
+#include <string>
+
 namespace keyple {
 namespace core {
 namespace util {
@@ -27,11 +29,13 @@ const ContactlessCardCommonProtocol
     ContactlessCardCommonProtocol::INNOVATRON_B_PRIME_CARD("INNOVATRON_B_PRIME_CARD");
 
 ContactlessCardCommonProtocol::ContactlessCardCommonProtocol(const std::string& name)
-: mName(name) {
+: mName(name)
+{
 }
 
 const std::string&
-ContactlessCardCommonProtocol::getName() const {
+ContactlessCardCommonProtocol::getName() const
+{
     return mName;
 }
 

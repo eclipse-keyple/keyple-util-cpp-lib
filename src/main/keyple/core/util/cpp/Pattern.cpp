@@ -9,6 +9,9 @@
 
 #include "keyple/core/util/cpp/Pattern.hpp"
 
+#include <memory>
+#include <string>
+
 #include "keyple/core/util/cpp/exception/PatternSyntaxException.hpp"
 
 namespace keyple {
@@ -20,11 +23,13 @@ using keyple::core::util::cpp::exception::PatternSyntaxException;
 
 Pattern::Pattern(const std::string& pattern, const int flags)
 : mPattern(pattern)
-, mFlags(flags) {
+, mFlags(flags)
+{
 }
 
 std::unique_ptr<Pattern>
-Pattern::compile(const std::string& regularExpression, const int flags) const {
+Pattern::compile(const std::string& regularExpression, const int flags) const
+{
     /* Compiler hack */
     (void)mFlags;
 
@@ -36,7 +41,8 @@ Pattern::compile(const std::string& regularExpression, const int flags) const {
 }
 
 std::unique_ptr<Pattern>
-Pattern::compile(const std::string& pattern) {
+Pattern::compile(const std::string& pattern)
+{
     try {
         return std::unique_ptr<Pattern>(new Pattern(pattern, 0));
     } catch (const std::exception& e) {
@@ -45,7 +51,8 @@ Pattern::compile(const std::string& pattern) {
 }
 
 std::unique_ptr<Matcher>
-Pattern::matcher(const std::string& input) const {
+Pattern::matcher(const std::string& input) const
+{
     return std::unique_ptr<Matcher>(new Matcher(this, input));
 }
 

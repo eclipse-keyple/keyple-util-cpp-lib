@@ -26,21 +26,24 @@ public:
      *
      */
     RuntimeException()
-    : Exception() {
+    : Exception()
+    {
     }
 
     /**
      *
      */
     explicit RuntimeException(const std::string& message)
-    : Exception(message) {
+    : Exception(message)
+    {
     }
 
     /**
      *
      */
     RuntimeException(const std::string& message, const std::shared_ptr<Exception> cause)
-    : Exception(message, cause) {
+    : Exception(message, cause)
+    {
     }
 };
 

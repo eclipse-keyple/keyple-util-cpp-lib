@@ -9,6 +9,9 @@
 
 #include "keyple/core/util/ByteArrayUtil.hpp"
 
+#include <string>
+#include <vector>
+
 #include "keyple/core/util/HexUtil.hpp"
 #include "keyple/core/util/KeypleAssert.hpp"
 #include "keyple/core/util/cpp/Character.hpp"
@@ -28,8 +31,8 @@ using keyple::core::util::cpp::exception::IllegalArgumentException;
 using keyple::core::util::cpp::exception::NegativeArraySizeException;
 
 const std::vector<uint8_t>
-ByteArrayUtil::extractBytes(
-    const std::vector<uint8_t>& src, const int bitOffset, const int nbBytes) {
+ByteArrayUtil::extractBytes(const std::vector<uint8_t>& src, const int bitOffset, const int nbBytes)
+{
     if (bitOffset < 0) {
         throw ArrayIndexOutOfBoundsException("negative index");
     }
@@ -60,7 +63,8 @@ ByteArrayUtil::extractBytes(
 }
 
 const std::vector<uint8_t>
-ByteArrayUtil::extractBytes(const uint64_t src, const int nbBytes) {
+ByteArrayUtil::extractBytes(const uint64_t src, const int nbBytes)
+{
     if (nbBytes < 0) {
         throw NegativeArraySizeException("negative array size");
     }
@@ -79,7 +83,8 @@ ByteArrayUtil::extractBytes(const uint64_t src, const int nbBytes) {
 }
 
 uint16_t
-ByteArrayUtil::extractShort(const std::vector<uint8_t>& src, const int offset) {
+ByteArrayUtil::extractShort(const std::vector<uint8_t>& src, const int offset)
+{
     if (offset < 0 || offset > static_cast<int>(src.size() - 2)) {
         throw ArrayIndexOutOfBoundsException("offset not in range [0...(src.size() - 2)");
     }
@@ -89,7 +94,8 @@ ByteArrayUtil::extractShort(const std::vector<uint8_t>& src, const int offset) {
 
 uint32_t
 ByteArrayUtil::extractInt(
-    const std::vector<uint8_t>& src, const int offset, const int nbBytes, const bool isSigned) {
+    const std::vector<uint8_t>& src, const int offset, const int nbBytes, const bool isSigned)
+{
     if (offset < 0) {
         throw ArrayIndexOutOfBoundsException("negative offset");
     }
@@ -123,12 +129,13 @@ ByteArrayUtil::extractInt(
         val |= complement;
     }
 
-    return (uint32_t)val;
+    return static_cast<uint32_t>(val);
 }
 
 uint64_t
 ByteArrayUtil::extractLong(
-    const std::vector<uint8_t>& src, const int offset, const int nbBytes, const bool isSigned) {
+    const std::vector<uint8_t>& src, const int offset, const int nbBytes, const bool isSigned)
+{
     int lOffset = offset;
     int lNbBytes = nbBytes;
 
@@ -144,8 +151,8 @@ ByteArrayUtil::extractLong(
     while (lNbBytes > 0) {
         /* Check MSB byte negativeness */
         negative = negative ? true : ((src[lOffset] & 0xFF) > 0x7F ? true : false);
-        val |= (((uint64_t)(src[lOffset++] & 0xFF)) << (8 * (--lNbBytes)));
-        complement &= ~(((uint64_t)0xFF) << 8 * lNbBytes);
+        val |= ((static_cast<uint64_t>(src[lOffset++] & 0xFF)) << (8 * (--lNbBytes)));
+        complement &= ~((static_cast<uint64_t>(0xFF)) << 8 * lNbBytes);
     }
 
     /* If signed, add complement */
@@ -153,12 +160,13 @@ ByteArrayUtil::extractLong(
         val |= complement;
     }
 
-    return (uint64_t)val;
+    return static_cast<uint64_t>(val);
 }
 
 void
 ByteArrayUtil::copyBytes(
-    const uint64_t src, std::vector<uint8_t>& dest, const int offset, const int nbBytes) {
+    const uint64_t src, std::vector<uint8_t>& dest, const int offset, const int nbBytes)
+{
     if (offset < 0 || offset > static_cast<int>(dest.size() - nbBytes)) {
         throw ArrayIndexOutOfBoundsException("offset not in range [0...(dest.size() - nbBytes)");
     }
@@ -167,12 +175,14 @@ ByteArrayUtil::copyBytes(
 }
 
 bool
-ByteArrayUtil::isValidHexString(const std::string& hex) {
+ByteArrayUtil::isValidHexString(const std::string& hex)
+{
     return HexUtil::isValid(hex);
 }
 
 const std::string
-ByteArrayUtil::normalizeHexString(const std::string& hex) {
+ByteArrayUtil::normalizeHexString(const std::string& hex)
+{
     if (hex.length() % 2 != 0) {
         return "0" + hex;
     }
@@ -181,14 +191,16 @@ ByteArrayUtil::normalizeHexString(const std::string& hex) {
 }
 
 std::vector<uint8_t>
-ByteArrayUtil::fromHex(const std::string& hex) {
+ByteArrayUtil::fromHex(const std::string& hex)
+{
     Assert::getInstance().notEmpty(hex, "hex").isEqual(hex.length() % 2, 0, "hex size");
 
     return HexUtil::toByteArray(hex);
 }
 
 const std::string
-ByteArrayUtil::toHex(const std::vector<uint8_t>& src) {
+ByteArrayUtil::toHex(const std::vector<uint8_t>& src)
+{
     if (src.empty()) {
         return "";
     }
@@ -197,27 +209,32 @@ ByteArrayUtil::toHex(const std::vector<uint8_t>& src) {
 }
 
 int
-ByteArrayUtil::twoBytesToInt(const std::vector<uint8_t>& bytes, const int offset) {
+ByteArrayUtil::twoBytesToInt(const std::vector<uint8_t>& bytes, const int offset)
+{
     return extractInt(bytes, offset, 2, false);
 }
 
 int
-ByteArrayUtil::twoBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset) {
+ByteArrayUtil::twoBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset)
+{
     return extractInt(bytes, offset, 2, true);
 }
 
 int
-ByteArrayUtil::threeBytesToInt(const std::vector<uint8_t>& bytes, const int offset) {
+ByteArrayUtil::threeBytesToInt(const std::vector<uint8_t>& bytes, const int offset)
+{
     return extractInt(bytes, offset, 3, false);
 }
 
 int
-ByteArrayUtil::threeBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset) {
+ByteArrayUtil::threeBytesSignedToInt(const std::vector<uint8_t>& bytes, const int offset)
+{
     return extractInt(bytes, offset, 3, true);
 }
 
 int
-ByteArrayUtil::fourBytesToInt(const std::vector<uint8_t>& bytes, const int offset) {
+ByteArrayUtil::fourBytesToInt(const std::vector<uint8_t>& bytes, const int offset)
+{
     return extractInt(bytes, offset, 4, true);
 }
 

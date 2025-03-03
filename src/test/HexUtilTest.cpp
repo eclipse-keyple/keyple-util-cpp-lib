@@ -18,44 +18,54 @@ using keyple::core::util::HexUtil;
 using keyple::core::util::cpp::Arrays;
 using keyple::core::util::cpp::exception::StringIndexOutOfBoundsException;
 
-TEST(HexUtilTest, isValid_whenHexIsValid_shouldReturnTrue) {
+TEST(HexUtilTest, isValid_whenHexIsValid_shouldReturnTrue)
+{
     ASSERT_TRUE(HexUtil::isValid("0123456789ABCDEF"));
 }
 
-TEST(HexUtilTest, isValid_whenHexHasOddLength_shouldReturnFalse) {
+TEST(HexUtilTest, isValid_whenHexHasOddLength_shouldReturnFalse)
+{
     ASSERT_FALSE(HexUtil::isValid("0123456789ABCDE"));
 }
 
-TEST(HexUtilTest, isValid_whenHexContainsEmptySpaces_shouldReturnFalse) {
+TEST(HexUtilTest, isValid_whenHexContainsEmptySpaces_shouldReturnFalse)
+{
     ASSERT_FALSE(HexUtil::isValid("01 23456789ABCDEF"));
 }
 
-TEST(HexUtilTest, isValid_whenHexContainsNotHexDigits_shouldReturnFalse) {
+TEST(HexUtilTest, isValid_whenHexContainsNotHexDigits_shouldReturnFalse)
+{
     ASSERT_FALSE(HexUtil::isValid("0123456789ABCDEG"));
 }
 
-TEST(HexUtilTest, toByteArray_whenHexIsEmpty_shouldReturnEmptyArray) {
+TEST(HexUtilTest, toByteArray_whenHexIsEmpty_shouldReturnEmptyArray)
+{
     ASSERT_EQ(static_cast<int>(HexUtil::toByteArray("").size()), 0);
 }
 
-TEST(HexUtilTest, toByteArray_whenHexIsOddLength_shouldThrowSIOOBE) {
+TEST(HexUtilTest, toByteArray_whenHexIsOddLength_shouldThrowSIOOBE)
+{
     EXPECT_THROW(HexUtil::toByteArray("1"), StringIndexOutOfBoundsException);
 }
 
-TEST(HexUtilTest, toByteArray_whenHexIsValid_shouldBeSuccessful) {
+TEST(HexUtilTest, toByteArray_whenHexIsValid_shouldBeSuccessful)
+{
     ASSERT_TRUE(
         Arrays::equals(HexUtil::toByteArray("ABCDEFabcdef"), {0xAB, 0xCD, 0xEF, 0xAB, 0xCD, 0xEF}));
 }
 
-TEST(HexUtilTest, toByte_whenHexIsEmpty_shouldReturn0) {
+TEST(HexUtilTest, toByte_whenHexIsEmpty_shouldReturn0)
+{
     ASSERT_EQ(HexUtil::toByte(""), 0);
 }
 
-TEST(HexUtilTest, toByte_whenHexLengthIsGreaterThan2_shouldTruncateLeft) {
+TEST(HexUtilTest, toByte_whenHexLengthIsGreaterThan2_shouldTruncateLeft)
+{
     ASSERT_EQ(HexUtil::toByte("1234"), 0x34);
 }
 
-TEST(HexUtilTest, toByte_whenHexIsValid_shouldBeSuccessful) {
+TEST(HexUtilTest, toByte_whenHexIsValid_shouldBeSuccessful)
+{
     ASSERT_EQ(HexUtil::toByte("1"), 0x1);
     ASSERT_EQ(HexUtil::toByte("AB"), 0xAB);
     ASSERT_EQ(HexUtil::toByte("CD"), 0xCD);
@@ -65,15 +75,18 @@ TEST(HexUtilTest, toByte_whenHexIsValid_shouldBeSuccessful) {
     ASSERT_EQ(HexUtil::toByte("ef"), 0xEF);
 }
 
-TEST(HexUtilTest, toShort_whenHexIsEmpty_shouldReturn0) {
+TEST(HexUtilTest, toShort_whenHexIsEmpty_shouldReturn0)
+{
     ASSERT_EQ(HexUtil::toShort(""), 0);
 }
 
-TEST(HexUtilTest, toShort_whenHexLengthIsGreaterThan4_shouldTruncateLeft) {
+TEST(HexUtilTest, toShort_whenHexLengthIsGreaterThan4_shouldTruncateLeft)
+{
     ASSERT_EQ(HexUtil::toShort("123456"), 0x3456);
 }
 
-TEST(HexUtilTest, toShort_whenHexIsValid_shouldBeSuccessful) {
+TEST(HexUtilTest, toShort_whenHexIsValid_shouldBeSuccessful)
+{
     ASSERT_EQ(HexUtil::toShort("1"), 0x1);
     ASSERT_EQ(HexUtil::toShort("ABCD"), 0xABCD);
     ASSERT_EQ(HexUtil::toShort("EF"), 0xEF);
@@ -81,15 +94,18 @@ TEST(HexUtilTest, toShort_whenHexIsValid_shouldBeSuccessful) {
     ASSERT_EQ(HexUtil::toShort("ef"), 0xEF);
 }
 
-TEST(HexUtilTest, toInt_whenHexIsEmpty_shouldReturn0) {
+TEST(HexUtilTest, toInt_whenHexIsEmpty_shouldReturn0)
+{
     ASSERT_EQ(HexUtil::toInt(""), 0);
 }
 
-TEST(HexUtilTest, toInt_whenHexLengthIsGreaterThan8_shouldTruncateLeft) {
+TEST(HexUtilTest, toInt_whenHexLengthIsGreaterThan8_shouldTruncateLeft)
+{
     ASSERT_EQ(HexUtil::toInt("123456789A"), 0x3456789A);
 }
 
-TEST(HexUtilTest, toInt_whenHexIsValid_shouldBeSuccessful) {
+TEST(HexUtilTest, toInt_whenHexIsValid_shouldBeSuccessful)
+{
     ASSERT_EQ(HexUtil::toInt("1"), 0x1);
     ASSERT_EQ(HexUtil::toInt("FE"), 0xFE);
     ASSERT_EQ(HexUtil::toInt("FEF7"), 0xFEF7);
@@ -99,15 +115,18 @@ TEST(HexUtilTest, toInt_whenHexIsValid_shouldBeSuccessful) {
     ASSERT_EQ(HexUtil::toInt("abcdef"), 0xABCDEF);
 }
 
-TEST(HexUtilTest, toLong_whenHexIsEmpty_shouldReturn0) {
+TEST(HexUtilTest, toLong_whenHexIsEmpty_shouldReturn0)
+{
     ASSERT_EQ(HexUtil::toLong(""), 0);
 }
 
-TEST(HexUtilTest, toLong_whenHexLengthIsGreaterThan16_shouldTruncateRight) {
+TEST(HexUtilTest, toLong_whenHexLengthIsGreaterThan16_shouldTruncateRight)
+{
     ASSERT_EQ(HexUtil::toLong("123456789ABCDEF012"), 0x3456789ABCDEF012L);
 }
 
-TEST(HexUtilTest, toLong_whenHexIsValid_shouldBeSuccessful) {
+TEST(HexUtilTest, toLong_whenHexIsValid_shouldBeSuccessful)
+{
     ASSERT_EQ(HexUtil::toLong("1"), 0x1L);
     ASSERT_EQ(HexUtil::toLong("FE"), 0xFEL);
     ASSERT_EQ(HexUtil::toLong("FEF7"), 0xFEF7L);
@@ -121,27 +140,32 @@ TEST(HexUtilTest, toLong_whenHexIsValid_shouldBeSuccessful) {
     ASSERT_EQ(HexUtil::toLong("abcdef"), 0xABCDEFL);
 }
 
-TEST(HexUtilTest, toHex_byte_array) {
+TEST(HexUtilTest, toHex_byte_array)
+{
     ASSERT_EQ(HexUtil::toHex(static_cast<uint8_t>(0xFE)), "FE");
 }
 
-TEST(HexUtilTest, toHex_byte) {
+TEST(HexUtilTest, toHex_byte)
+{
     ASSERT_EQ(HexUtil::toHex(static_cast<uint8_t>(0xFE)), "FE");
 }
 
-TEST(HexUtilTest, toHex_short) {
+TEST(HexUtilTest, toHex_short)
+{
     ASSERT_EQ(HexUtil::toHex(static_cast<uint16_t>(0xFE)), "FE");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint16_t>(0xFE34)), "FE34");
 }
 
-TEST(HexUtilTest, toHex_int) {
+TEST(HexUtilTest, toHex_int)
+{
     ASSERT_EQ(HexUtil::toHex(static_cast<uint32_t>(0xFE)), "FE");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint32_t>(0xFE34)), "FE34");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint32_t>(0xFE3456)), "FE3456");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint32_t>(0xFE345678)), "FE345678");
 }
 
-TEST(HexUtilTest, toHex_long) {
+TEST(HexUtilTest, toHex_long)
+{
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFEL)), "FE");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE34L)), "FE34");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456L)), "FE3456");

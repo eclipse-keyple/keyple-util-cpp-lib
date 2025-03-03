@@ -9,6 +9,8 @@
 
 #include "keyple/core/util/cpp/LoggerFactory.hpp"
 
+#include <memory>
+
 namespace keyple {
 namespace core {
 namespace util {
@@ -17,7 +19,8 @@ namespace cpp {
 std::mutex LoggerFactory::mtx;
 
 std::unique_ptr<Logger>
-LoggerFactory::getLogger(const std::type_info& type) {
+LoggerFactory::getLogger(const std::type_info& type)
+{
     return std::unique_ptr<Logger>(new Logger(type.name(), &mtx));
 }
 

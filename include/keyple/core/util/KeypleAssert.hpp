@@ -48,7 +48,8 @@ public:
      */
     template <typename T>
     Assert&
-    notNull(const std::shared_ptr<T> obj, const std::string& name) {
+    notNull(const std::shared_ptr<T> obj, const std::string& name)
+    {
         if (obj == nullptr) {
             throw IllegalArgumentException(ARGUMENT + name + IS_NULL);
         }
@@ -78,7 +79,8 @@ public:
      */
     template <typename T>
     Assert&
-    notEmpty(const std::vector<T>& obj, const std::string& name) {
+    notEmpty(const std::vector<T>& obj, const std::string& name)
+    {
         if (obj.empty()) {
             throw IllegalArgumentException(ARGUMENT + name + IS_EMPTY);
         }

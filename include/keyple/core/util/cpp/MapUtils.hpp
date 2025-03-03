@@ -21,7 +21,8 @@ class MapUtils {
 public:
     template <typename K, typename V>
     static const std::vector<K>
-    getKeySet(const std::map<const K, const V>& m) {
+    getKeySet(const std::map<const K, const V>& m)
+    {
         std::vector<K> v;
 
         std::for_each(m.begin(), m.end(), [&](const auto& e) { v.push_back(e.first); });
@@ -31,7 +32,8 @@ public:
 
     template <typename K, typename V>
     static const std::vector<V>
-    getValueSet(const std::map<const K, const V>& m) {
+    getValueSet(const std::map<const K, const V>& m)
+    {
         std::vector<V> v;
 
         std::for_each(m.begin(), m.end(), [&](const auto& e) { v.push_back(e.second); });

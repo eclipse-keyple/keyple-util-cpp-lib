@@ -22,81 +22,96 @@ private:
     std::string privateString;
 
 public:
-    StringBuilder() {
+    StringBuilder()
+    {
     }
 
     explicit StringBuilder(const std::string& initialString)
-    : privateString(initialString) {
+    : privateString(initialString)
+    {
     }
 
-    explicit StringBuilder(std::size_t capacity) {
+    explicit StringBuilder(std::size_t capacity)
+    {
         ensureCapacity(capacity);
     }
 
     char
-    charAt(std::size_t index) {
+    charAt(std::size_t index)
+    {
         return privateString[index];
     }
 
     StringBuilder*
-    append(const std::string& toAppend) {
+    append(const std::string& toAppend)
+    {
         privateString += toAppend;
         return this;
     }
 
     template <typename T>
     StringBuilder*
-    append(const T& toAppend) {
+    append(const T& toAppend)
+    {
         privateString += toString(toAppend);
         return this;
     }
 
     StringBuilder*
-    insert(std::size_t position, const std::string& toInsert) {
+    insert(std::size_t position, const std::string& toInsert)
+    {
         privateString.insert(position, toInsert);
         return this;
     }
 
     template <typename T>
     StringBuilder*
-    insert(std::size_t position, const T& toInsert) {
+    insert(std::size_t position, const T& toInsert)
+    {
         privateString.insert(position, toString(toInsert));
         return this;
     }
 
-    std::string
-    toString() {
+    const std::string&
+    toString()
+    {
         return privateString;
     }
 
     std::size_t
-    length() {
+    length()
+    {
         return privateString.length();
     }
 
     void
-    setLength(std::size_t newLength) {
+    setLength(std::size_t newLength)
+    {
         privateString.resize(newLength);
     }
 
     std::size_t
-    capacity() {
+    capacity()
+    {
         return privateString.capacity();
     }
 
     void
-    ensureCapacity(std::size_t minimumCapacity) {
+    ensureCapacity(std::size_t minimumCapacity)
+    {
         privateString.reserve(minimumCapacity);
     }
 
     StringBuilder*
-    remove(std::size_t start, std::size_t end) {
+    remove(std::size_t start, std::size_t end)
+    {
         privateString.erase(start, end - start);
         return this;
     }
 
     StringBuilder*
-    replace(std::size_t start, std::size_t end, const std::string& newString) {
+    replace(std::size_t start, std::size_t end, const std::string& newString)
+    {
         privateString.replace(start, end - start, newString);
         return this;
     }
@@ -104,7 +119,8 @@ public:
 private:
     template <typename T>
     static std::string
-    toString(const T& subject) {
+    toString(const T& subject)
+    {
         std::ostringstream ss;
         ss << subject;
         return ss.str();

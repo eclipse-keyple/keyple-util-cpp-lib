@@ -9,6 +9,9 @@
 
 #include "keyple/core/util/KeypleAssert.hpp"
 
+#include <string>
+#include <vector>
+
 #include "keyple/core/util/HexUtil.hpp"
 
 namespace keyple {
@@ -27,18 +30,21 @@ const char* Assert::IS_NOT_HEX = "] is not a hex string.";
 const char* Assert::NOT_EQUAL_TO = "] not equal to [";
 const char* Assert::CLOSING_BRACKET = "].";
 
-Assert::Assert() {
+Assert::Assert()
+{
 }
 
 Assert&
-Assert::getInstance() {
+Assert::getInstance()
+{
     static Assert INSTANCE;
 
     return INSTANCE;
 }
 
 Assert&
-Assert::notEmpty(const std::string& obj, const std::string& name) {
+Assert::notEmpty(const std::string& obj, const std::string& name)
+{
     if (obj == "") {
         throw IllegalArgumentException(ARGUMENT + name + IS_EMPTY);
     }
@@ -47,7 +53,8 @@ Assert::notEmpty(const std::string& obj, const std::string& name) {
 }
 
 Assert&
-Assert::notEmpty(const std::vector<uint8_t>& obj, const std::string& name) {
+Assert::notEmpty(const std::vector<uint8_t>& obj, const std::string& name)
+{
     if (obj.size() == 0) {
         throw IllegalArgumentException(ARGUMENT + name + IS_EMPTY);
     }
@@ -56,7 +63,8 @@ Assert::notEmpty(const std::vector<uint8_t>& obj, const std::string& name) {
 }
 
 Assert&
-Assert::isTrue(const bool condition, const std::string& name) {
+Assert::isTrue(const bool condition, const std::string& name)
+{
     if (!condition) {
         throw IllegalArgumentException(CONDITION + name + IS_FALSE);
     }
@@ -65,7 +73,8 @@ Assert::isTrue(const bool condition, const std::string& name) {
 }
 
 Assert&
-Assert::greaterOrEqual(const size_t number, const size_t minValue, const std::string& name) {
+Assert::greaterOrEqual(const size_t number, const size_t minValue, const std::string& name)
+{
     if (number < minValue) {
         throw IllegalArgumentException(
             ARGUMENT + name + HAS_A_VALUE + std::to_string(number) + LESS_THAN
@@ -76,7 +85,8 @@ Assert::greaterOrEqual(const size_t number, const size_t minValue, const std::st
 }
 
 Assert&
-Assert::isEqual(const size_t number, const size_t value, const std::string& name) {
+Assert::isEqual(const size_t number, const size_t value, const std::string& name)
+{
     if (number != value) {
         throw IllegalArgumentException(
             ARGUMENT + name + HAS_A_VALUE + std::to_string(number) + NOT_EQUAL_TO
@@ -88,7 +98,8 @@ Assert::isEqual(const size_t number, const size_t value, const std::string& name
 
 Assert&
 Assert::isInRange(
-    const size_t number, const size_t minValue, const size_t maxValue, const std::string& name) {
+    const size_t number, const size_t minValue, const size_t maxValue, const std::string& name)
+{
     if (number < minValue) {
         throw IllegalArgumentException(
             ARGUMENT + name + HAS_A_VALUE + std::to_string(number) + LESS_THAN
@@ -103,7 +114,8 @@ Assert::isInRange(
 }
 
 Assert&
-Assert::isHexString(const std::string& hex, const std::string& name) {
+Assert::isHexString(const std::string& hex, const std::string& name)
+{
     if (!HexUtil::isValid(hex)) {
         throw IllegalArgumentException(ARGUMENT + name + IS_NOT_HEX);
     }

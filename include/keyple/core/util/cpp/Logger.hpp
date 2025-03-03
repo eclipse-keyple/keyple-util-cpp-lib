@@ -61,7 +61,8 @@ public:
      */
     template <typename... Args>
     void
-    trace(const std::string& format, Args... args) {
+    trace(const std::string& format, Args... args)
+    {
         if (mLevel >= Level::logTrace)
             log("TRACE", format, std::forward<Args>(args)...);
     }
@@ -71,7 +72,8 @@ public:
      */
     template <typename... Args>
     void
-    debug(const std::string& format, Args... args) {
+    debug(const std::string& format, Args... args)
+    {
         if (mLevel >= Level::logDebug)
             log("DEBUG", format, std::forward<Args>(args)...);
     }
@@ -81,7 +83,8 @@ public:
      */
     template <typename... Args>
     void
-    warn(const std::string& format, Args... args) {
+    warn(const std::string& format, Args... args)
+    {
         if (mLevel >= Level::logWarn)
             log("WARN", format, std::forward<Args>(args)...);
     }
@@ -91,7 +94,8 @@ public:
      */
     template <typename... Args>
     void
-    info(const std::string& format, Args... args) {
+    info(const std::string& format, Args... args)
+    {
         if (mLevel >= Level::logInfo)
             log("INFO", format, std::forward<Args>(args)...);
     }
@@ -101,7 +105,8 @@ public:
      */
     template <typename... Args>
     void
-    error(const std::string& format, Args... args) {
+    error(const std::string& format, Args... args)
+    {
         if (mLevel >= Level::logError)
             log("ERROR", format, std::forward<Args>(args)...);
     }
@@ -137,7 +142,8 @@ private:
      */
 #ifdef __GNUG__  // gnu C++ compiler
     std::string
-    demangle(const char* mangled_name) {
+    demangle(const char* mangled_name)
+    {
         std::size_t len = 0;
         int status = 0;
         std::unique_ptr<char, decltype(&std::free)> ptr(
@@ -149,7 +155,8 @@ private:
     }
 #else
     std::string
-    demangle(const char* name) {
+    demangle(const char* name)
+    {
         std::string s(name);
         if (s.size() > maxClassNameLength)
             s.resize(maxClassNameLength);
@@ -158,7 +165,8 @@ private:
 #endif  // _GNUG_
 
     void
-    printf(std::ostringstream& os, const char* s) {
+    printf(std::ostringstream& os, const char* s)
+    {
         while (s && *s) {
             if (*s == '%' && *(s + 1) != '%')
                 throw std::runtime_error("invalid format: missing arguments");
@@ -168,7 +176,8 @@ private:
 
     template <typename T, typename... Args>
     void
-    printf(std::ostringstream& os, const char* s, T& value, Args... args) {
+    printf(std::ostringstream& os, const char* s, T& value, Args... args)
+    {
         while (s && *s) {
             if (*s == '%' && *(s + 1) != '%') {
                 os << value;
@@ -181,7 +190,8 @@ private:
 
     template <typename T, typename... Args>
     void
-    printf(std::ostringstream& os, const char* s, const T* value, Args... args) {
+    printf(std::ostringstream& os, const char* s, const T* value, Args... args)
+    {
         while (s && *s) {
             if (*s == '%' && *(s + 1) != '%') {
                 os << *value;
@@ -198,7 +208,8 @@ private:
      */
     template <typename... Args>
     void
-    log(const std::string& label, const std::string& format, Args... args) {
+    log(const std::string& label, const std::string& format, Args... args)
+    {
         const std::lock_guard<std::mutex> lock(*mtx);
 
         /* Header */

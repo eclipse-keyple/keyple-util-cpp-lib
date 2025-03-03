@@ -26,14 +26,16 @@ public:
      *
      */
     UnsupportedOperationException()
-    : RuntimeException() {
+    : RuntimeException()
+    {
     }
 
     /**
      *
      */
     explicit UnsupportedOperationException(const std::string& message)
-    : RuntimeException(message) {
+    : RuntimeException(message)
+    {
     }
 
     /**
@@ -41,7 +43,8 @@ public:
      */
     UnsupportedOperationException(
         const std::string& message, const std::shared_ptr<Exception> cause)
-    : RuntimeException(message, cause) {
+    : RuntimeException(message, cause)
+    {
     }
 };
 

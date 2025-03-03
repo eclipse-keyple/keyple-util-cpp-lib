@@ -9,6 +9,7 @@
 
 #include <cstdio>
 #include <sstream>
+#include <string>
 
 #include "keyple/core/util/cpp/Matcher.hpp"
 #include "keyple/core/util/cpp/Pattern.hpp"
@@ -23,13 +24,15 @@ using keyple::core::util::cpp::exception::IndexOutOfBoundsException;
 
 Matcher::Matcher(const Pattern* parent, const std::string& text)
 : mParentPattern(parent)
-, mText(text) {
+, mText(text)
+{
     /* Put fields to initial states */
     reset();
 }
 
 bool
-Matcher::match(const int from, const int anchor) const {
+Matcher::match(const int from, const int anchor) const
+{
     (void)from;
     (void)anchor;
 
@@ -40,12 +43,14 @@ Matcher::match(const int from, const int anchor) const {
 }
 
 bool
-Matcher::matches() {
+Matcher::matches()
+{
     return match(mFrom, ENDANCHOR);
 }
 
 std::string
-Matcher::replaceAll(const std::string& replacement) const {
+Matcher::replaceAll(const std::string& replacement) const
+{
     std::stringstream ss;
 
     ss << std::regex_replace(mText, mParentPattern->mPattern, replacement);
@@ -54,7 +59,8 @@ Matcher::replaceAll(const std::string& replacement) const {
 }
 
 bool
-Matcher::find() {
+Matcher::find()
+{
     int nextSearchIndex = mLast;
     if (nextSearchIndex == mFirst)
         nextSearchIndex++;
@@ -74,7 +80,8 @@ Matcher::find() {
 }
 
 bool
-Matcher::find(const int start) {
+Matcher::find(const int start)
+{
     int limit = getTextLength();
 
     if (start < 0 || start > limit)
@@ -86,7 +93,8 @@ Matcher::find(const int start) {
 }
 
 const std::string
-Matcher::group(const int group) const {
+Matcher::group(const int group) const
+{
     if (group < 0 || group > static_cast<int>(mGroups.size()))
         throw IndexOutOfBoundsException("No group" + std::to_string(group));
 
@@ -94,12 +102,14 @@ Matcher::group(const int group) const {
 }
 
 const std::string
-Matcher::group() const {
+Matcher::group() const
+{
     return group(0);
 }
 
 bool
-Matcher::search(const int from) {
+Matcher::search(const int from)
+{
     mSubs = mText.substr(from, mText.length() - from);
 
     if (std::regex_search(mSubs, mGroups, mParentPattern->mPattern))
@@ -109,12 +119,14 @@ Matcher::search(const int from) {
 }
 
 int
-Matcher::getTextLength() const {
+Matcher::getTextLength() const
+{
     return static_cast<int>(mText.length());
 }
 
 Matcher*
-Matcher::reset() {
+Matcher::reset()
+{
     mFirst = -1;
     mLast = 0;
     mOldLast = -1;

@@ -26,14 +26,16 @@ public:
      *
      */
     explicit InterruptedException(const std::string& name)
-    : Exception(name) {
+    : Exception(name)
+    {
     }
 
     /**
      *
      */
     InterruptedException(const std::string& name, const std::shared_ptr<Exception> cause)
-    : Exception(name, cause) {
+    : Exception(name, cause)
+    {
     }
 };
 

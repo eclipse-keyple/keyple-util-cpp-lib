@@ -14,7 +14,8 @@
 using keyple::core::util::cpp::Logger;
 
 int
-main(int argc, char** argv) {
+main(int argc, char** argv)
+{
     /* Initialize GTest */
     ::testing::InitGoogleTest(&argc, argv);
 

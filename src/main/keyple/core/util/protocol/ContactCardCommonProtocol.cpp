@@ -9,6 +9,8 @@
 
 #include "keyple/core/util/protocol/ContactCardCommonProtocol.hpp"
 
+#include <string>
+
 namespace keyple {
 namespace core {
 namespace util {
@@ -21,11 +23,13 @@ const ContactCardCommonProtocol ContactCardCommonProtocol::INNOVATRON_HIGH_SPEED
     "INNOVATRON_HIGH_SPEED_PROTOCOL_SAM");
 
 ContactCardCommonProtocol::ContactCardCommonProtocol(const std::string& name)
-: mName(name) {
+: mName(name)
+{
 }
 
 const std::string&
-ContactCardCommonProtocol::getName() const {
+ContactCardCommonProtocol::getName() const
+{
     return mName;
 }
 

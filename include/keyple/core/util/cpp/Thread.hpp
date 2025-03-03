@@ -40,7 +40,8 @@ public:
     , mAlive(false)
     , mName(name)
     , mInterrupted(false)
-    , mDedicatedThread(false) {
+    , mDedicatedThread(false)
+    {
     }
 
     /**
@@ -52,7 +53,8 @@ public:
      * integer.
      */
     Thread()
-    : Thread("Thread-x") {
+    : Thread("Thread-x")
+    {
     }
 
     /**
@@ -64,7 +66,8 @@ public:
      *
      */
     void
-    setName(const std::string& name) {
+    setName(const std::string& name)
+    {
         mName = name;
     }
 
@@ -81,7 +84,8 @@ public:
      * @throw IllegalThreadStateException if the thread was already started.
      */
     void
-    start() {
+    start()
+    {
         mAlive = true;
         mDedicatedThread = true;
 
@@ -92,7 +96,8 @@ public:
      *
      */
     void
-    run() {
+    run()
+    {
         mAlive = true;
 
         this->execute();
@@ -109,7 +114,8 @@ public:
      * since pthread_join() automatically detatches a thread.
      */
     int
-    join() {
+    join()
+    {
         int result = -1;
 
         if (isAlive() == true) {
@@ -123,7 +129,8 @@ public:
      *
      */
     bool
-    isAlive() {
+    isAlive()
+    {
         /* Perform live check if dedicated thread is in use */
         if (mDedicatedThread == true) {
             mAlive = (mThread.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready);
@@ -147,7 +154,8 @@ public:
      * throw(InterruptedException)
      */
     static void
-    sleep(uint64_t millis) {
+    sleep(uint64_t millis)
+    {
         std::this_thread::sleep_for(std::chrono::milliseconds(millis));
     }
 
@@ -181,7 +189,8 @@ public:
      * @throws SecurityException if the current thread cannot modify this thread
      */
     void
-    interrupt() {
+    interrupt()
+    {
         mInterrupted = true;
     }
 
@@ -189,15 +198,17 @@ public:
      *
      */
     bool
-    isInterrupted() const {
+    isInterrupted() const
+    {
         return mInterrupted;
     }
 
     /**
      *
      */
-    std::string
-    getName() {
+    const std::string&
+    getName()
+    {
         return mName;
     }
 
@@ -205,7 +216,8 @@ public:
      *
      */
     void
-    setUncaughtExceptionHandler(std::shared_ptr<UncaughtExceptionHandler> eh) {
+    setUncaughtExceptionHandler(std::shared_ptr<UncaughtExceptionHandler> eh)
+    {
         mUncaughtExceptionHandler = eh;
     }
 
@@ -255,7 +267,8 @@ private:
      * will be called to carry out the thread’s action.
      */
     static void
-    runThread(void* arg) {
+    runThread(void* arg)
+    {
         (static_cast<Thread*>(arg))->execute();
     }
 
