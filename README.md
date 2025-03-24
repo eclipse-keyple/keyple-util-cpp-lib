@@ -10,7 +10,7 @@ The full documentation, including the **user guide**, **download information** a
 
 ## Doxygen
 
-The doxygen is available online: [eclipse.github.io/keyple-util-cpp-lib/](https://eclipse.github.io/keyple-util-cpp-lib/)
+The doxygen is available online: [docs.keyple.org/keyple-util-cpp-lib/](https://docs.keyple.org/keyple-util-cpp-lib/)
 
 ## About the source code
 
