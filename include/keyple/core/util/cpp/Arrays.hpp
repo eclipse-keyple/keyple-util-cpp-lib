@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2024 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * This program and the accompanying materials are made available under the                       *
  * terms of the MIT License which is available at https://opensource.org/licenses/MIT.            *
@@ -132,7 +132,7 @@ public:
 
     template <typename T>
     static bool
-    contains(const std::vector<T>& a, typename identity<T>::type b)
+    contains(const std::vector<T>& a, const T b)
     {
         return std::any_of(a.begin(), a.end(), [&](T i) { return i == b; });
     }
