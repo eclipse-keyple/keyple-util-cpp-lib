@@ -16,10 +16,14 @@
 #include <string>
 #include <vector>
 
+#include "keyple/core/util/cpp/exception/PatternSyntaxException.hpp"
+
 namespace keyple {
 namespace core {
 namespace util {
 namespace cpp {
+
+using keyple::core::util::cpp::exception::PatternSyntaxException;
 
 class StringUtils {
 public:
@@ -45,9 +49,12 @@ public:
     static inline bool
     matches(const std::string& s, const std::string& regex)
     {
-        std::regex r(regex);
-
-        return std::regex_match(s, r);
+        try {
+            std::regex r(regex);
+            return std::regex_match(s, r);
+        } catch (const std::regex_error&) {
+            throw PatternSyntaxException();
+        }
     }
 
     static inline const std::vector<std::string>
