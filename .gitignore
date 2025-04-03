@@ -37,3 +37,6 @@ out
 
 # IDE files
 CMakeSettings.json
+
+# OS
+.DS_Store
