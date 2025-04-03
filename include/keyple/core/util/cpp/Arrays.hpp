@@ -132,7 +132,7 @@ public:
 
     template <typename T>
     static bool
-    contains(const std::vector<T>& a, const T b)
+    contains(const std::vector<T>& a, typename identity<T>::type b)
     {
         return std::any_of(a.begin(), a.end(), [&](T i) { return i == b; });
     }
