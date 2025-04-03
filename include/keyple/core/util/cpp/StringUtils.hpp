@@ -52,8 +52,8 @@ public:
         try {
             std::regex r(regex);
             return std::regex_match(s, r);
-        } catch (const std::regex_error&) {
-            throw PatternSyntaxException();
+        } catch (const std::regex_error& e) {
+            throw PatternSyntaxException(e.what());
         }
     }
 
