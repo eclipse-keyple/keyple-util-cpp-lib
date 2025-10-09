@@ -24,6 +24,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
 
@@ -227,12 +228,18 @@ private:
     {
         const std::lock_guard<std::mutex> lock(*mtx);
 
-        /* Header */
+        /* Get thread ID */
+        std::ostringstream threadIdStream;
+        threadIdStream << std::this_thread::get_id();
+        std::string threadId = threadIdStream.str();
+
         std::string name = className;
         name.resize(70);
+
         std::printf(
-            "[%s]   [%5s]   [%-70s]   ",
+            "[%s] [%s] [%5s] [%-70s]   ",
             getCurrentTimestamp().c_str(),
+            threadId.c_str(),
             label.c_str(),
             name.c_str());
 
