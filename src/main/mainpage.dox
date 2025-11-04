@@ -1,0 +1,22 @@
+/**
+ * @mainpage Keyple Util C++ Library
+ *
+ * @section overview Overview
+ *
+ * The **Keyple Util C++ Library** contains various utility classes used by
+ * all Keyple components, providing essential common functionality across
+ * the Keyple middleware.
+ *
+ * @section key_features Key Features
+ *
+ * - Common utility classes and helper functions
+ * - Logging and exception management
+ * - Design patterns and data structures
+ * - Cross-platform compatibility utilities
+ * - Shared base classes for Keyple components
+ *
+ * @section resources Resources
+ *
+ * - **Documentation**: [keyple.org](https://keyple.org)
+ * - **API Documentation**: [docs.keyple.org/keyple-util-cpp-lib](https://docs.keyple.org/keyple-util-cpp-lib)
+ */
