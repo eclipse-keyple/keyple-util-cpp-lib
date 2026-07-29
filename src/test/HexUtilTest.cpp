@@ -1,30 +1,26 @@
-/**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association                                                *
- * https://www.calypsonet-asso.org/                                                               *
- *                                                                                                *
- * See the NOTICE file(s) distributed with this work for additional information regarding         *
- * copyright ownership.                                                                           *
- *                                                                                                *
- * This program and the accompanying materials are made available under the terms of the Eclipse  *
- * Public License 2.0 which is available at http://www.eclipse.org/legal/epl-2.0                  *
- *                                                                                                *
- * SPDX-License-Identifier: EPL-2.0                                                               *
- **************************************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/    *
+ *                                                                            *
+ * See the NOTICE file(s) distributed with this work for additional           *
+ * information regarding copyright ownership.                                 *
+ *                                                                            *
+ * This program and the accompanying materials are made available under the   *
+ * terms of the Eclipse Public License 2.0 which is available at              *
+ * http://www.eclipse.org/legal/epl-2.0                                       *
+ *                                                                            *
+ * SPDX-License-Identifier: EPL-2.0                                           *
+ ******************************************************************************/
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "HexUtil.h"
+#include "keyple/core/util/HexUtil.hpp"
+#include "keyple/core/util/cpp/Arrays.hpp"
+#include "keyple/core/util/cpp/exception/StringIndexOutOfBoundsException.hpp"
 
-/* Keyple Core Util */
-#include "Arrays.h"
-#include "StringIndexOutOfBoundsException.h"
-
-using namespace testing;
-
-using namespace keyple::core::util;
-using namespace keyple::core::util::cpp;
-using namespace keyple::core::util::cpp::exception;
+using keyple::core::util::HexUtil;
+using keyple::core::util::cpp::Arrays;
+using keyple::core::util::cpp::exception::StringIndexOutOfBoundsException;
 
 TEST(HexUtilTest, isValid_whenHexIsValid_shouldReturnTrue)
 {
@@ -58,8 +54,9 @@ TEST(HexUtilTest, toByteArray_whenHexIsOddLength_shouldThrowSIOOBE)
 
 TEST(HexUtilTest, toByteArray_whenHexIsValid_shouldBeSuccessful)
 {
-    ASSERT_TRUE(Arrays::equals(HexUtil::toByteArray("ABCDEFabcdef"),
-                              {0xAB, 0xCD, 0xEF, 0xAB, 0xCD, 0xEF}));
+    ASSERT_TRUE(Arrays::equals(
+        HexUtil::toByteArray("ABCDEFabcdef"),
+        {0xAB, 0xCD, 0xEF, 0xAB, 0xCD, 0xEF}));
 }
 
 TEST(HexUtilTest, toByte_whenHexIsEmpty_shouldReturn0)
@@ -178,8 +175,14 @@ TEST(HexUtilTest, toHex_long)
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE34L)), "FE34");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456L)), "FE3456");
     ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE345678L)), "FE345678");
-    ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456789AL)), "FE3456789A");
-    ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCL)), "FE3456789ABC");
-    ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEL)), "FE3456789ABCDE");
-    ASSERT_EQ(HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEF0L)), "FE3456789ABCDEF0");
+    ASSERT_EQ(
+        HexUtil::toHex(static_cast<uint64_t>(0xFE3456789AL)), "FE3456789A");
+    ASSERT_EQ(
+        HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCL)), "FE3456789ABC");
+    ASSERT_EQ(
+        HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEL)),
+        "FE3456789ABCDE");
+    ASSERT_EQ(
+        HexUtil::toHex(static_cast<uint64_t>(0xFE3456789ABCDEF0L)),
+        "FE3456789ABCDEF0");
 }
