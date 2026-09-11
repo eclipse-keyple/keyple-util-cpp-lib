@@ -58,7 +58,7 @@ public:
     }
 };
 
-class any final {
+class any {
 public:
     /// Dummy function to make it virtual
     virtual void
@@ -123,7 +123,7 @@ public:
     any&
     operator=(const any& rhs)
     {
-        any(rhs).swap(*this);
+        any(rhs).swap(*this);  // NOLINT
         return *this;
     }
 
@@ -134,7 +134,7 @@ public:
     any&
     operator=(any&& rhs) noexcept
     {
-        any(std::move(rhs)).swap(*this);
+        any(std::move(rhs)).swap(*this);  // NOLINT
         return *this;
     }
 
@@ -156,7 +156,7 @@ public:
             std::is_copy_constructible<
                 typename std::decay<ValueType>::type>::value,
             "T shall satisfy the CopyConstructible requirements.");
-        any(std::forward<ValueType>(value)).swap(*this);
+        any(std::forward<ValueType>(value)).swap(*this);  // NOLINT
         return *this;
     }
 
@@ -345,8 +345,7 @@ private:  // Storage and Virtual Method Table
                                                           // [any.class]
             && sizeof(T) <= sizeof(storage_union::stack)
             && std::alignment_of<T>::value <= std::alignment_of<
-                   storage_union::stack_storage_t>::value)> {
-    };
+                   storage_union::stack_storage_t>::value)> { };
 
     /// Returns the pointer to the vtable of the type T.
     template <typename T>
