@@ -84,6 +84,16 @@ public:
     }
 
     /**
+     * Returns the detail message, so that what() reports it instead of the
+     * default "Unknown exception" of std::exception.
+     */
+    const char*
+    what() const noexcept override
+    {
+        return mMessage.c_str();
+    }
+
+    /**
      * Returns the cause of the exception.
      */
     Exception*
