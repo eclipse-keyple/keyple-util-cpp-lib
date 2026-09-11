@@ -203,6 +203,23 @@ private:
         throw std::runtime_error("extra arguments provided to printf");
     }
 
+    /* Without this, a C string goes to the pointer overload below, which
+     * dereferences it and logs only its first character. */
+    template <typename... Args>
+    void
+    printf(
+        std::ostringstream& os, const char* s, const char* value, Args... args)
+    {
+        while (s && *s) {
+            if (*s == '%' && *(s + 1) != '%') {
+                os << (value != nullptr ? value : "null");
+                return printf(os, ++s, args...);
+            }
+            os << *s++;
+        }
+        throw std::runtime_error("extra arguments provided to printf");
+    }
+
     template <typename T, typename... Args>
     void
     printf(std::ostringstream& os, const char* s, const T* value, Args... args)
