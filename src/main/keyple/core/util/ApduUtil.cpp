@@ -150,8 +150,11 @@ ApduUtil::allocateBuffer(const std::vector<uint8_t>& data, const uint8_t le)
 
     int length = 4;  // Header
 
-    length += static_cast<int>(data.size() + 1);  // Lc + data
-    length += 1;                                  // Le
+    if (!data.empty()) {
+        length += static_cast<int>(data.size()) + 1;  // Lc + data
+    }
+
+    length += 1;  // Le
 
     return std::vector<uint8_t>(length);
 }
