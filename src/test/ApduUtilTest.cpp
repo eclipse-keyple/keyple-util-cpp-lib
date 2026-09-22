@@ -64,6 +64,14 @@ TEST(ApduUtilTest, build_whenDataInAndLeAreNotNull_shouldReturnCase4)
     ASSERT_EQ(apduCommand, CASE4);
 }
 
+TEST(ApduUtilTest, build_whenDataInIsEmptyAndLeIsNotNull_shouldReturnCase2)
+{
+    std::vector<uint8_t> apduCommand
+        = ApduUtil::build(CLA, INS, P1, P2, std::vector<uint8_t>(), LE);
+
+    ASSERT_EQ(apduCommand, CASE2);
+}
+
 TEST(ApduUtilTest, isCase4_whenCase1_shouldReturnFalse)
 {
     ASSERT_FALSE(ApduUtil::isCase4(CASE1));
