@@ -11,7 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0                                           *
  ******************************************************************************/
 
+#include <array>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "gmock/gmock.h"
@@ -34,9 +36,9 @@ const char* TLV2 = "6F23A516BF0C1353070A3C2005141001C70800000000112233448409315"
 
 static bool
 mapContainsEntry(
-    const std::map<const int, const std::vector<uint8_t>>& m,
+    const std::map<const int, const std::vector<std::uint8_t>>& m,
     const int tag,
-    const std::vector<uint8_t>& value)
+    const std::vector<std::uint8_t>& value)
 {
     const auto it = m.find(tag);
     if (it != m.end() && it->second == value) {
@@ -48,7 +50,7 @@ mapContainsEntry(
 
 static bool
 mapContainsOnlyKeys(
-    const std::map<const int, std::vector<std::vector<uint8_t>>>& m,
+    const std::map<const int, std::vector<std::vector<std::uint8_t>>>& m,
     const std::vector<int>& values)
 {
     return std::all_of(m.begin(), m.end(), [&](const auto& entry) {
@@ -58,8 +60,8 @@ mapContainsOnlyKeys(
 
 static bool
 vectorContainsExactly(
-    std::vector<std::vector<uint8_t>>& v,
-    const std::vector<std::vector<uint8_t>>& values)
+    std::vector<std::vector<std::uint8_t>>& v,
+    const std::vector<std::vector<std::uint8_t>>& values)
 {
     if (v.size() != values.size()) {
         return false;
@@ -76,7 +78,8 @@ vectorContainsExactly(
 
 static bool
 vectorContainsExactly(
-    std::vector<std::vector<uint8_t>>& v, const std::vector<uint8_t>& value)
+    std::vector<std::vector<std::uint8_t>>& v,
+    const std::vector<std::uint8_t>& value)
 {
     if (v.size() != 1) {
         return false;
@@ -96,8 +99,9 @@ TEST(
 
     ASSERT_TRUE(vectorContainsExactly(
         tlvs[0x6F],
-        HexUtil::toByteArray("8409315449432E49434131A516BF0C13C708000"
-                             "000001122334453070A3C2005141001")));
+        HexUtil::toByteArray(
+            "8409315449432E49434131A516BF0C13C708000"
+            "000001122334453070A3C2005141001")));
     ASSERT_TRUE(vectorContainsExactly(
         tlvs[0x84], HexUtil::toByteArray("315449432E49434131")));
     ASSERT_TRUE(vectorContainsExactly(
@@ -224,6 +228,33 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthFieldIsInvalid_shouldIAE)
         IllegalArgumentException);
 }
 
+TEST(BerTlvUtilTest, parseSimple_whenStructureIsTruncated_shouldIAE)
+{
+    /* Missing length, truncated 2/3-byte tag, truncated 2/3-byte length */
+    const std::array<std::string, 6> truncated
+        = {"01", "1F", "1F81", "0181", "0182", "018201"};
+
+    for (const auto& tlv : truncated) {
+        EXPECT_THROW(
+            BerTlvUtil::parseSimple(HexUtil::toByteArray(tlv), true),
+            IllegalArgumentException)
+            << tlv;
+    }
+}
+
+TEST(BerTlvUtilTest, parse_whenStructureIsTruncated_shouldIAE)
+{
+    const std::array<std::string, 6> truncated
+        = {"01", "1F", "1F81", "0181", "0182", "018201"};
+
+    for (const auto& tlv : truncated) {
+        EXPECT_THROW(
+            BerTlvUtil::parse(HexUtil::toByteArray(tlv), true),
+            IllegalArgumentException)
+            << tlv;
+    }
+}
+
 TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue)
 {
     const auto tlvs
@@ -237,7 +268,7 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue)
 TEST(BerTlvUtilTest, parseSimple_whenLengthIsTwoBytes_shouldValue)
 {
     /* Length 250 */
-    std::vector<uint8_t> tlv(253);
+    std::vector<std::uint8_t> tlv(253);
 
     tlv[0] = 0x84;
     tlv[1] = 0x81;
@@ -251,13 +282,14 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsTwoBytes_shouldValue)
 
     ASSERT_NE(it, tlvs.end());
     ASSERT_EQ(static_cast<int>(it->second.size()), 250);
-    ASSERT_TRUE(Arrays::containsOnly(it->second, static_cast<uint8_t>(0xA5)));
+    ASSERT_TRUE(
+        Arrays::containsOnly(it->second, static_cast<std::uint8_t>(0xA5)));
 }
 
 TEST(BerTlvUtilTest, parseSimple_whenLengthIsThreeBytes_shouldValue)
 {
     /* Length 260 */
-    std::vector<uint8_t> tlv(264);
+    std::vector<std::uint8_t> tlv(264);
 
     tlv[0] = 0x84;
     tlv[1] = 0x82;
@@ -271,7 +303,8 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthIsThreeBytes_shouldValue)
     const auto it = tlvs.find(0x84);
     ASSERT_NE(it, tlvs.end());
     ASSERT_EQ(static_cast<int>(it->second.size()), 260);
-    ASSERT_TRUE(Arrays::containsOnly(it->second, static_cast<uint8_t>(0xA5)));
+    ASSERT_TRUE(
+        Arrays::containsOnly(it->second, static_cast<std::uint8_t>(0xA5)));
 }
 
 TEST(BerTlvUtilTest, isConstructed_when1ByteTagIsConstructed_shouldReturnTrue)
