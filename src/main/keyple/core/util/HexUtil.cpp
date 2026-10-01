@@ -86,7 +86,7 @@ HexUtil::isValid(const std::string& hex)
     }
 
     for (int i = 0; i < static_cast<int>(hex.size()); i++) {
-        if (mHexToNibble[hex.at(i)] == 0xFF) {
+        if (mHexToNibble[static_cast<unsigned char>(hex.at(i))] == 0xFF) {
             return false;
         }
     }
@@ -105,8 +105,9 @@ HexUtil::toByteArray(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i += 2) {
         tab[i / 2]
-            = ((mHexToNibble[hex.at(i)] << 4)
-               + (mHexToNibble[hex.at(i + 1)] & 0xFF));
+            = ((mHexToNibble[static_cast<unsigned char>(hex.at(i))] << 4)
+               + (mHexToNibble[static_cast<unsigned char>(hex.at(i + 1))]
+                  & 0xFF));
     }
 
     return tab;
@@ -119,7 +120,7 @@ HexUtil::toByte(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<unsigned char>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -132,7 +133,7 @@ HexUtil::toShort(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<unsigned char>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -145,7 +146,7 @@ HexUtil::toInt(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<unsigned char>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -158,7 +159,7 @@ HexUtil::toLong(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<unsigned char>(hex.at(i))] & 0xFF);
     }
 
     return val;
