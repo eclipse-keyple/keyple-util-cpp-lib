@@ -28,6 +28,22 @@ using keyple::core::util::cpp::Arrays;
 using keyple::core::util::cpp::exception::IllegalArgumentException;
 using keyple::core::util::cpp::exception::IndexOutOfBoundsException;
 
+namespace {
+
+/*
+ * C++: std::vector::operator[] does not throw on out-of-range access (unlike
+ * Java arrays), so bounds must be checked explicitly before each read.
+ */
+void
+checkIndex(const std::vector<uint8_t>& tlvStructure, const int index)
+{
+    if (index < 0 || index >= static_cast<int>(tlvStructure.size())) {
+        throw IndexOutOfBoundsException("Invalid index");
+    }
+}
+
+} /* namespace */
+
 BerTlvUtil::BerTlvUtil()
 {
 }
@@ -182,15 +198,14 @@ int
 BerTlvUtil::getTagSize(
     const std::vector<uint8_t>& tlvStructure, const int offset)
 {
-    /* C++: prevent accessing unexisting values */
-    if (offset >= static_cast<int>(tlvStructure.size())) {
-        throw IndexOutOfBoundsException("Invalid index");
-    }
+    checkIndex(tlvStructure, offset);
 
     if ((tlvStructure[offset] & 0x1F) == 0x1F) {
+        checkIndex(tlvStructure, offset + 1);
         if ((tlvStructure[offset + 1] & 0x80) == 0) {
             return 2;
         } else {
+            checkIndex(tlvStructure, offset + 2);
             if ((tlvStructure[offset + 2] & 0x80) != 0) {
                 throw IllegalArgumentException("Invalid tag.");
             }
@@ -206,6 +221,11 @@ int
 BerTlvUtil::getTag(
     const std::vector<uint8_t>& tlvStructure, const int offset, const int size)
 {
+    if (size >= 1 && size <= 3) {
+        checkIndex(tlvStructure, offset);
+        checkIndex(tlvStructure, offset + size - 1);
+    }
+
     switch (size) {
     case 1:
         return tlvStructure[offset] & 0xFF;
@@ -225,6 +245,8 @@ int
 BerTlvUtil::getLengthSize(
     const std::vector<uint8_t>& tlvStructure, const int offset)
 {
+    checkIndex(tlvStructure, offset);
+
     int firstByteLength = tlvStructure[offset] & 0xff;
 
     switch (firstByteLength) {
@@ -245,6 +267,11 @@ int
 BerTlvUtil::getLength(
     const std::vector<uint8_t>& tlvStructure, const int offset, const int size)
 {
+    if (size >= 1 && size <= 3) {
+        checkIndex(tlvStructure, offset);
+        checkIndex(tlvStructure, offset + size - 1);
+    }
+
     switch (size) {
     case 1:
         return tlvStructure[offset] & 0x7F;

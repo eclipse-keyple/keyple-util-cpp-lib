@@ -224,6 +224,29 @@ TEST(BerTlvUtilTest, parseSimple_whenLengthFieldIsInvalid_shouldIAE)
         IllegalArgumentException);
 }
 
+TEST(BerTlvUtilTest, parseSimple_whenStructureIsTruncated_shouldIAE)
+{
+    /* Missing length, truncated 2/3-byte tag, truncated 2/3-byte length */
+    const char* truncated[] = {"01", "1F", "1F81", "0181", "0182", "018201"};
+    for (const char* tlv : truncated) {
+        EXPECT_THROW(
+            BerTlvUtil::parseSimple(HexUtil::toByteArray(tlv), true),
+            IllegalArgumentException)
+            << tlv;
+    }
+}
+
+TEST(BerTlvUtilTest, parse_whenStructureIsTruncated_shouldIAE)
+{
+    const char* truncated[] = {"01", "1F", "1F81", "0181", "0182", "018201"};
+    for (const char* tlv : truncated) {
+        EXPECT_THROW(
+            BerTlvUtil::parse(HexUtil::toByteArray(tlv), true),
+            IllegalArgumentException)
+            << tlv;
+    }
+}
+
 TEST(BerTlvUtilTest, parseSimple_whenLengthIsZero_shouldReturnEmptyValue)
 {
     const auto tlvs
