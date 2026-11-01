@@ -13,7 +13,11 @@
 
 #include <array>
 #include <map>
+<<<<<<< HEAD
 #include <string>
+=======
+#include <utility>
+>>>>>>> 45703a5 (chore: added conan support)
 #include <vector>
 
 #include "gmock/gmock.h"
@@ -53,9 +57,13 @@ mapContainsOnlyKeys(
     const std::map<const int, std::vector<std::vector<std::uint8_t>>>& m,
     const std::vector<int>& values)
 {
-    return std::all_of(m.begin(), m.end(), [&](const auto& entry) {
-        return Arrays::contains(values, entry.first);
-    });
+    return std::all_of(
+        m.begin(),
+        m.end(),
+        [&](const std::pair<const int, std::vector<std::vector<uint8_t>>>&
+                entry) {
+            return Arrays::contains(values, entry.first);
+        });  // NOLINT
 }
 
 static bool
