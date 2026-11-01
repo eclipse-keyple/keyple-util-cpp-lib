@@ -42,6 +42,13 @@ TEST(HexUtilTest, isValid_whenHexContainsNotHexDigits_shouldReturnFalse)
     ASSERT_FALSE(HexUtil::isValid("0123456789ABCDEG"));
 }
 
+TEST(HexUtilTest, isValid_whenHexContainsNonAsciiChars_shouldReturnFalse)
+{
+    /* "é" in UTF-8 (0xC3 0xA9): negative values when char is signed */
+    ASSERT_FALSE(HexUtil::isValid("\xC3\xA9"));
+    ASSERT_FALSE(HexUtil::isValid("\x80\xFF"));
+}
+
 TEST(HexUtilTest, toByteArray_whenHexIsEmpty_shouldReturnEmptyArray)
 {
     ASSERT_EQ(static_cast<int>(HexUtil::toByteArray("").size()), 0);

@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -101,7 +102,8 @@ public:
      * @throw IllegalArgumentException if object is null or empty
      * @since 2.0.0
      */
-    Assert& notEmpty(const std::vector<uint8_t>& obj, const std::string& name);
+    Assert&
+    notEmpty(const std::vector<std::uint8_t>& obj, const std::string& name);
 
     /**
      * Assert that a condition is true.

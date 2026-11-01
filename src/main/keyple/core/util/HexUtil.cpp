@@ -49,7 +49,7 @@ const std::vector<std::string> HexUtil::mByteToHex
        "F0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "FA", "FB",
        "FC", "FD", "FE", "FF"};
 
-const std::vector<uint8_t> HexUtil::mHexToNibble = {
+const std::vector<std::uint8_t> HexUtil::mHexToNibble = {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -86,7 +86,7 @@ HexUtil::isValid(const std::string& hex)
     }
 
     for (int i = 0; i < static_cast<int>(hex.size()); i++) {
-        if (mHexToNibble[hex.at(i)] == 0xFF) {
+        if (mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] == 0xFF) {
             return false;
         }
     }
@@ -94,10 +94,10 @@ HexUtil::isValid(const std::string& hex)
     return true;
 }
 
-const std::vector<uint8_t>
+const std::vector<std::uint8_t>
 HexUtil::toByteArray(const std::string& hex)
 {
-    std::vector<uint8_t> tab(hex.size() / 2);
+    std::vector<std::uint8_t> tab(hex.size() / 2);
 
     if (hex.length() % 2) {
         throw StringIndexOutOfBoundsException("string has odd length");
@@ -105,8 +105,9 @@ HexUtil::toByteArray(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i += 2) {
         tab[i / 2]
-            = ((mHexToNibble[hex.at(i)] << 4)
-               + (mHexToNibble[hex.at(i + 1)] & 0xFF));
+            = ((mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] << 4)
+               + (mHexToNibble[static_cast<std::uint8_t>(hex.at(i + 1))]
+                  & 0xFF));
     }
 
     return tab;
@@ -119,7 +120,7 @@ HexUtil::toByte(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -132,7 +133,7 @@ HexUtil::toShort(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -145,7 +146,7 @@ HexUtil::toInt(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] & 0xFF);
     }
 
     return val;
@@ -158,14 +159,14 @@ HexUtil::toLong(const std::string& hex)
 
     for (int i = 0; i < static_cast<int>(hex.length()); i++) {
         val <<= 4;
-        val |= (mHexToNibble[hex.at(i)] & 0xFF);
+        val |= (mHexToNibble[static_cast<std::uint8_t>(hex.at(i))] & 0xFF);
     }
 
     return val;
 }
 
 const std::string
-HexUtil::toHex(const std::vector<uint8_t>& tab)
+HexUtil::toHex(const std::vector<std::uint8_t>& tab)
 {
     std::stringstream ss;
 
@@ -177,13 +178,13 @@ HexUtil::toHex(const std::vector<uint8_t>& tab)
 }
 
 const std::string
-HexUtil::toHex(const uint8_t val)
+HexUtil::toHex(const std::uint8_t val)
 {
     return mByteToHex[val & 0xFF];
 }
 
 const std::string
-HexUtil::toHex(const uint16_t val)
+HexUtil::toHex(const std::uint16_t val)
 {
     if ((val & 0xFF00) == 0) {
         return mByteToHex[val & 0xFF];
@@ -193,7 +194,7 @@ HexUtil::toHex(const uint16_t val)
 }
 
 const std::string
-HexUtil::toHex(const uint32_t val)
+HexUtil::toHex(const std::uint32_t val)
 {
     if ((val & 0xFFFFFF00) == 0) {
         return mByteToHex[val & 0xFF];
@@ -209,7 +210,7 @@ HexUtil::toHex(const uint32_t val)
 }
 
 const std::string
-HexUtil::toHex(const uint64_t val)
+HexUtil::toHex(const std::uint64_t val)
 {
     if ((val & 0xFFFFFFFFFFFFFF00L) == 0) {
         return mByteToHex[static_cast<int>((val & 0xFF))];
