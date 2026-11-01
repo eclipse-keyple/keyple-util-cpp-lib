@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include <map>
+#include <utility>
 #include <vector>
 
 #include "gmock/gmock.h"
@@ -51,9 +52,13 @@ mapContainsOnlyKeys(
     const std::map<const int, std::vector<std::vector<uint8_t>>>& m,
     const std::vector<int>& values)
 {
-    return std::all_of(m.begin(), m.end(), [&](const auto& entry) {
-        return Arrays::contains(values, entry.first);
-    });
+    return std::all_of(
+        m.begin(),
+        m.end(),
+        [&](const std::pair<const int, std::vector<std::vector<uint8_t>>>&
+                entry) {
+            return Arrays::contains(values, entry.first);
+        });  // NOLINT
 }
 
 static bool
@@ -96,8 +101,9 @@ TEST(
 
     ASSERT_TRUE(vectorContainsExactly(
         tlvs[0x6F],
-        HexUtil::toByteArray("8409315449432E49434131A516BF0C13C708000"
-                             "000001122334453070A3C2005141001")));
+        HexUtil::toByteArray(
+            "8409315449432E49434131A516BF0C13C708000"
+            "000001122334453070A3C2005141001")));
     ASSERT_TRUE(vectorContainsExactly(
         tlvs[0x84], HexUtil::toByteArray("315449432E49434131")));
     ASSERT_TRUE(vectorContainsExactly(

@@ -1,0 +1,10 @@
+# Matches the "ubuntu-latest" runner in the keypop-actions reusable CI workflow.
+# Override the build type on the command line, e.g. -s build_type=Debug.
+[settings]
+os=Linux
+arch=x86_64
+compiler=gcc
+compiler.version=13
+compiler.libcxx=libstdc++11
+compiler.cppstd=11
+build_type=Release

@@ -30,13 +30,18 @@ SET(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 
 SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Compilers
 SET(CMAKE_C_COMPILER_WORKS 1)
 SET(CMAKE_CXX_COMPILER_WORKS 1)
 
-IF(NOT TOOLCHAIN_FILE)
-    MESSAGE(FATAL_ERROR "Toolchain file not specified")
+# Compiler warnings (compiler/OS selection itself is now handled by the
+# Conan profile passed at configure time, see profiles/).
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    ADD_COMPILE_OPTIONS(-Wall -Wextra -Wdeprecated -Wno-overloaded-virtual -pedantic -pedantic-errors -Werror)
+ELSEIF(MSVC)
+    ADD_COMPILE_OPTIONS(/W4 /WX /EHsc)
 ENDIF()
 
 # Set common output directory

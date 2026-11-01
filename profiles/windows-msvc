@@ -1,0 +1,13 @@
+# Matches the "windows-latest" runner in the keypop-actions reusable CI
+# workflow. MSVC has no /std:c++11 switch, so 14 is the closest supported
+# mode (it still accepts this project's C++11-only headers). Override the
+# build type on the command line, e.g. -s build_type=Debug -- compiler.
+# runtime_type follows build_type automatically.
+[settings]
+os=Windows
+arch=x86_64
+compiler=msvc
+compiler.version=193
+compiler.runtime=dynamic
+compiler.cppstd=14
+build_type=Release

@@ -1,0 +1,11 @@
+# Matches the "macos-latest" (Apple Silicon) runner in the keypop-actions
+# reusable CI workflow. Override the build type on the command line, e.g.
+# -s build_type=Debug.
+[settings]
+os=Macos
+arch=armv8
+compiler=apple-clang
+compiler.version=16
+compiler.libcxx=libc++
+compiler.cppstd=11
+build_type=Release
