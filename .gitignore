@@ -50,3 +50,6 @@ out
 
 # IDE files
 CMakeSettings.json
+
+# Conan
+CMakeUserPresets.json
