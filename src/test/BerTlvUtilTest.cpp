@@ -13,11 +13,8 @@
 
 #include <array>
 #include <map>
-<<<<<<< HEAD
 #include <string>
-=======
 #include <utility>
->>>>>>> 45703a5 (chore: added conan support)
 #include <vector>
 
 #include "gmock/gmock.h"

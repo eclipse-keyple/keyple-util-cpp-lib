@@ -13,7 +13,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 PROJECT(KeypleUtilCppLib
-        VERSION 2.4.1
+        VERSION 2.4.2
         LANGUAGES C CXX)
 
 SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
@@ -29,7 +29,7 @@ SET(CMAKE_CXX_COMPILER_WORKS 1)
 IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     ADD_COMPILE_OPTIONS(-Wall -Wextra -Wdeprecated -Wno-overloaded-virtual -pedantic -pedantic-errors -Werror)
 ELSEIF(MSVC)
-    ADD_COMPILE_OPTIONS(/W4 /WX /EHsc)
+    ADD_COMPILE_OPTIONS(/W4 /WX /wd4251 /EHsc)
 ENDIF()
 
 # Set common output directory
