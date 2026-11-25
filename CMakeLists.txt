@@ -13,30 +13,23 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 PROJECT(KeypleUtilCppLib
-        VERSION 2.4.1
+        VERSION 2.4.2
         LANGUAGES C CXX)
-
-SET(CMAKE_PROJECT_VERSION_MAJOR "2")
-SET(CMAKE_PROJECT_VERSION_MINOR "4")
-SET(CMAKE_PROJECT_VERSION_PATCH "1")
-
-SET(CMAKE_PROJECT_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.
-                           ${CMAKE_PROJECT_VERSION_MINOR}.
-                           ${CMAKE_PROJECT_VERSION_PATCH}")
-
-SET(PACKAGE_NAME "keyple-util-cpp-lib")
-SET(PACKAGE_VERSION ${CMAKE_PROJECT_VERSION})
-SET(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 
 SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Compilers
 SET(CMAKE_C_COMPILER_WORKS 1)
 SET(CMAKE_CXX_COMPILER_WORKS 1)
 
-IF(NOT TOOLCHAIN_FILE)
-    MESSAGE(FATAL_ERROR "Toolchain file not specified")
+# Compiler warnings (compiler/OS selection itself is now handled by the
+# Conan profile in use).
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    ADD_COMPILE_OPTIONS(-Wall -Wextra -Wdeprecated -Wno-overloaded-virtual -pedantic -pedantic-errors -Werror)
+ELSEIF(MSVC)
+    ADD_COMPILE_OPTIONS(/W4 /WX /wd4251 /EHsc)
 ENDIF()
 
 # Set common output directory
